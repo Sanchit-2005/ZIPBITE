@@ -41,11 +41,11 @@ const restaurantSchema = new mongoose.Schema(
 
     cuisineTypes: {
       type: [String],
-    //   required: true,
-    //   validate: {
-    //     validator: (value) => value.length > 0,
-    //     message: "At least one cuisine type is required",
-    //   },
+      //   required: true,
+      //   validate: {
+      //     validator: (value) => value.length > 0,
+      //     message: "At least one cuisine type is required",
+      //   },
     },
 
     address: {
@@ -57,8 +57,15 @@ const restaurantSchema = new mongoose.Schema(
     },
 
     location: {
-      latitude: { type: Number },
-      longitude: { type: Number },
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number], // [longitude, latitude]
+        required: true,
+      },
     },
 
     openingHours: [
@@ -74,7 +81,7 @@ const restaurantSchema = new mongoose.Schema(
             "Saturday",
             "Sunday",
           ],
-        //   required: true,
+          //   required: true,
         },
         openTime: { type: String },
         closeTime: { type: String },
@@ -135,6 +142,8 @@ const restaurantSchema = new mongoose.Schema(
 
 restaurantSchema.index({ owner: 1 });
 restaurantSchema.index({ "address.city": 1 });
+restaurantSchema.index({ location: "2dsphere" });
+
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
 

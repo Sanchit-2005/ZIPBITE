@@ -9,7 +9,7 @@ const registerRestaurant = async (req, res) => {
     });
 
     if (checkRestaurant) {
-      res
+      return res
         .status(StatusCodes.CONFLICT)
         .json({ message: "Restaurant already Exists!" });
     }

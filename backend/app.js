@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import User from "./models/userModel.js";
 import userRouter from "./routes/userroute.js";
 import restaurantRoute from "./routes/restaurantRoute.js";
+import menuRoute from "./routes/menuItemsRoute.js";
 const app = express();
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 
 app.use("/users", userRouter);
 app.use("/restaurants", restaurantRoute);
+app.use("/api", menuRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`app is listening on port ${process.env.PORT} `);

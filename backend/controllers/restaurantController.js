@@ -200,51 +200,76 @@ const searchRestaurant = async (req, res) => {
 
 const filters = async (req, res) => {
   try {
-    const { category, isVegetarian, ratings, price } = req.query;
+    const {
+      category,
+      isVegetarian,
+      ratings,
+      price,
+      page = 1,
+      limit = 10,
+    } = req.query;
 
+    // Validate pagination parameters
+    const currentPage = Number(page);
+    const itemsPerPage = Number(limit);
+
+    if (
+      !Number.isInteger(currentPage) ||
+      !Number.isInteger(itemsPerPage) ||
+      currentPage < 1 ||
+      itemsPerPage < 1 ||
+      itemsPerPage > 100
+    ) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: "Invalid page or limit",
+      });
+    }
+
+    // Build filters dynamically
     const filter = {};
 
-    
     if (category) {
       filter.category = category;
     }
 
-    
     if (isVegetarian !== undefined) {
       filter.isVegetarian = isVegetarian === "true";
     }
 
-    
     if (ratings) {
       filter.ratings = { $gte: Number(ratings) };
     }
 
-    
     if (price) {
       filter.price = { $lte: Number(price) };
     }
 
-    const itemsList = await MenuItem.find(filter);
+    // Count matching documents
+    const totalItems = await MenuItem.countDocuments(filter);
 
-    if (itemsList.length === 0) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        message: "No menu items found matching these filters",
-      });
-    }
+    // Fetch only the requested page
+    const itemsList = await MenuItem.find(filter)
+      .sort({ _id: 1 })
+      .skip((currentPage - 1) * itemsPerPage)
+      .limit(itemsPerPage);
 
     return res.status(StatusCodes.OK).json({
-      count: itemsList.length,
       itemsList,
+      pagination: {
+        currentPage,
+        itemsPerPage,
+        totalItems,
+        totalPages: Math.ceil(totalItems / itemsPerPage),
+        hasNextPage: currentPage < Math.ceil(totalItems / itemsPerPage),
+        hasPrevPage: currentPage > 1,
+      },
     });
-  } catch (error) {
+  } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: "Failed to filter menu items",
-      error: error.message,
+      message: "Failed to fetch menu items",
     });
   }
 };
-
-
 
 export {
   registerRestaurant,
@@ -253,5 +278,5 @@ export {
   deleteRestaurant,
   getNearbyRestaurant,
   searchRestaurant,
-  filters
+  filters,
 };

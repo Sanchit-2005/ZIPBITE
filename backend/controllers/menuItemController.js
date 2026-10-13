@@ -5,23 +5,40 @@ const addItem = async (req, res) => {
     const { restaurant, name, description, price, category, preparationTime } =
       req.body;
 
-      const checkItem=MenuItem.findOne({restaurant,name});
-      if(checkItem){
-        return  res.status(StatusCodes.NOT_ACCEPTABLE).json({message:"Item already exists !"});
-      }
+    // 1. Check whether the item already exists in this restaurant
+    const checkItem = await MenuItem.findOne({
+      restaurant,
+      name: name.trim(),
+    });
 
+    if (checkItem) {
+      return res.status(StatusCodes.CONFLICT).json({
+        message: "This food item already exists in this restaurant!",
+      });
+    }
+
+    // 2. If it doesn't exist, create the item
     const menuItem = new MenuItem({
       restaurant,
-      name,
+      name: name.trim(),
       description,
       price,
       category,
       preparationTime,
     });
+
+    // 3. Save the item
     await menuItem.save();
-    res.status(StatusCodes.CREATED).json({ message: "new Item added  !" });
+
+    return res.status(StatusCodes.CREATED).json({
+      message: "New food item added successfully!",
+      menuItem,
+    });
   } catch (err) {
-    throw err;
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to add food item",
+      error: err.message,
+    });
   }
 };
 
@@ -61,7 +78,7 @@ const deleteItem = async (req, res) => {
   try {
     const { itemId } = req.params;
 
-    const item = await MenuItem.findByIdAndDelete( itemId );
+    const item = await MenuItem.findByIdAndDelete(itemId);
     if (!item) {
       res
         .status(StatusCodes.CONFLICT)
@@ -101,5 +118,17 @@ const updateItem = async (req, res) => {
     throw err;
   }
 };
+const getAllItems = async (req, res) => {
+  try {
+    const items = await MenuItem.find().populate("restaurant", "name image");
 
-export { addItem, getItems, oneItem, deleteItem, updateItem };
+    return res.status(StatusCodes.OK).json(items);
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Failed to fetch all items." });
+  }
+};
+
+export { addItem, getItems, oneItem, deleteItem, updateItem, getAllItems };

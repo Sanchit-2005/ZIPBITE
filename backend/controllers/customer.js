@@ -10,7 +10,7 @@ const login = async (req, res) => {
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ message: "User not found" });
-  }
+  }i
   const checkPass = await bcrypt.compare(password, checkUser.password);
   if (!checkPass) {
     return res

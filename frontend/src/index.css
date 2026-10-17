@@ -1,4 +1,58 @@
-:root {
+@import "tailwindcss";
+
+
+
+/* ZIPBITE Footer Styling */
+
+.zipbite-footer a {
+  text-decoration: none !important;
+}
+
+.zipbite-footer .footer-links a {
+  color: #666 !important;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.zipbite-footer .footer-links a:hover {
+  color: #ff6500 !important;
+}
+
+.zipbite-footer .footer-brand {
+  color: #ff6500;
+}
+
+.zipbite-footer .footer-heading {
+  font-size: 11px !important;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.zipbite-footer .footer-description {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.zipbite-footer .footer-cta {
+  text-decoration: none !important;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.zipbite-footer .footer-cta:hover {
+  opacity: 0.9;
+}
+
+.zipbite-footer .footer-bottom {
+  font-size: 13px;
+  color: #777;
+}
+
+
+/* :root {
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -108,4 +162,4 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
-}
+} */

@@ -1,0 +1,594 @@
+
+.zb-page {
+  min-height: 100vh;
+  background: #fffdf9;
+  color: #25221f;
+  padding: 22px 0 60px;
+}
+
+.zb-container {
+  max-width: 1240px;
+}
+
+.zb-back {
+  border: 0;
+  background: transparent;
+  color: #625b54;
+  font-weight: 600;
+  margin-bottom: 22px;
+  padding: 8px 0;
+}
+
+.zb-back span {
+  margin-right: 8px;
+}
+
+.zb-back:hover {
+  color: #f06428;
+}
+
+/* Hero */
+.zb-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 32px;
+  padding: 48px;
+  border-radius: 28px;
+  background: #fff0e5;
+  overflow: hidden;
+  position: relative;
+}
+
+.zb-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.zb-eyebrow,
+.zb-section-label {
+  color: #ed6128;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.zb-live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #37a56a;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.zb-hero h1 {
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 850;
+  letter-spacing: -2.5px;
+  line-height: 1.05;
+  margin: 22px 0 18px;
+  overflow-wrap: anywhere;
+}
+
+.zb-hero-description {
+  color: #6d6259;
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 470px;
+}
+
+.zb-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0 14px;
+}
+
+.zb-hero-meta span {
+  background: white;
+  border: 1px solid #f5dfcf;
+  border-radius: 50px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.zb-address {
+  color: #766b62;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.zb-hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+  background: #f06428;
+  color: white;
+  padding: 15px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 18px;
+  transition: 0.2s;
+}
+
+.zb-hero-button:hover {
+  background: #d94c17;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.zb-hero-image-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.zb-hero-image {
+  display: block;
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 48% 48% 28px 28px;
+  box-shadow: 0 22px 50px #9e573426;
+  transform: rotate(2deg);
+}
+
+.zb-hero-placeholder {
+  height: 300px;
+  display: grid;
+  place-items: center;
+  font-size: 110px;
+  background: #ffdfc7;
+  border-radius: 50%;
+}
+
+.zb-image-sticker {
+  position: absolute;
+  right: -5px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 95px;
+  height: 95px;
+  background: #f06428;
+  color: white;
+  border-radius: 50%;
+  border: 5px solid #fff0e5;
+  transform: rotate(10deg);
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.zb-image-sticker strong {
+  font-size: 16px;
+}
+
+/* Menu heading */
+.zb-menu-section {
+  padding-top: 68px;
+  scroll-margin-top: 25px;
+}
+
+.zb-menu-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.zb-menu-heading h2 {
+  font-size: clamp(32px, 4vw, 45px);
+  letter-spacing: -1.8px;
+  font-weight: 850;
+  margin: 10px 0;
+}
+
+.zb-menu-heading h2 span {
+  color: #f06428;
+}
+
+.zb-menu-heading p {
+  color: #81776e;
+  margin-bottom: 0;
+}
+
+.zb-menu-count {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  padding-bottom: 5px;
+}
+
+.zb-menu-count strong {
+  font-size: 27px;
+  color: #f06428;
+}
+
+.zb-menu-count span {
+  font-size: 12px;
+  color: #81776e;
+}
+
+/* Search and category filter */
+.zb-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid #eee7df;
+  border-radius: 14px;
+  padding: 0 18px;
+  height: 54px;
+  max-width: 500px;
+  box-shadow: 0 5px 20px #37200a06;
+}
+
+.zb-search-wrap > span {
+  font-size: 28px;
+  color: #f06428;
+}
+
+.zb-search-wrap input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 14px;
+}
+
+.zb-search-wrap button {
+  border: 0;
+  background: transparent;
+  color: #777;
+}
+
+.zb-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 30px;
+}
+
+.zb-category {
+  border: 1px solid #eae3db;
+  background: white;
+  color: #625a52;
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 650;
+  transition: 0.2s;
+}
+
+.zb-category:hover,
+.zb-category.active {
+  background: #f06428;
+  border-color: #f06428;
+  color: white;
+}
+
+/* Food cards */
+.zb-food-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+}
+
+.zb-food-card {
+  min-width: 0;
+  background: white;
+  border: 1px solid #f0eae3;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.zb-food-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 38px #40240e12;
+}
+
+.zb-food-image-wrap {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  background: #f7eee5;
+}
+
+.zb-food-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.zb-food-card:hover .zb-food-image {
+  transform: scale(1.05);
+}
+
+.zb-food-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 70px;
+}
+
+.zb-food-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 10px;
+  font-weight: 750;
+  box-shadow: 0 3px 12px #0000000c;
+}
+
+.zb-food-badge > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #269b59;
+}
+
+.zb-food-badge.nonveg > span {
+  background: #e33d3d;
+}
+
+.zb-food-content {
+  padding: 19px;
+}
+
+.zb-food-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 10px;
+}
+
+.zb-food-title-row h3 {
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 800;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.zb-price {
+  color: #f06428;
+  font-size: 17px;
+  white-space: nowrap;
+}
+
+.zb-food-description {
+  color: #847a70;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 12px 0 20px;
+  min-height: 41px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.zb-food-footer {
+  border-top: 1px solid #f2ece5;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.zb-food-footer > span {
+  color: #82786e;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.zb-add-button {
+  border: 0;
+  background: #fff0e5;
+  color: #e75a21;
+  border-radius: 9px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.zb-add-button:hover {
+  background: #f06428;
+  color: white;
+}
+
+.zb-empty {
+  text-align: center;
+  padding: 60px 20px;
+  border: 1px dashed #e6d9cc;
+  border-radius: 20px;
+}
+
+.zb-empty > span {
+  font-size: 45px;
+}
+
+.zb-empty h3 {
+  font-weight: 800;
+  margin-top: 15px;
+}
+
+.zb-empty p {
+  color: #81776e;
+}
+
+.zb-empty button {
+  background: #f06428;
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 18px;
+}
+
+/* Bottom banner */
+.zb-bottom-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: #28231f;
+  color: white;
+  border-radius: 22px;
+  padding: 30px 38px;
+  margin-top: 65px;
+}
+
+.zb-bottom-banner > div > span {
+  color: #ff9c69;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.zb-bottom-banner h3 {
+  font-size: 25px;
+  font-weight: 800;
+  margin: 9px 0;
+}
+
+.zb-bottom-banner p {
+  color: #c4b8ad;
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+.zb-banner-icon {
+  font-size: 65px;
+}
+
+/* Loading */
+.zb-loading {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  color: #74685d;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .zb-hero {
+    padding: 32px;
+    gap: 20px;
+  }
+
+  .zb-hero-image {
+    height: 280px;
+  }
+
+  .zb-food-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .zb-page {
+    padding-top: 12px;
+  }
+
+  .zb-hero {
+    grid-template-columns: 1fr;
+    padding: 25px 21px;
+    border-radius: 20px;
+  }
+
+  .zb-hero h1 {
+    letter-spacing: -1.5px;
+  }
+
+  .zb-hero-image-wrap {
+    margin: 12px 8px 0;
+  }
+
+  .zb-hero-image {
+    height: 230px;
+    border-radius: 22px;
+    transform: none;
+  }
+
+  .zb-image-sticker {
+    width: 78px;
+    height: 78px;
+    right: -8px;
+    bottom: -10px;
+  }
+
+  .zb-menu-section {
+    padding-top: 45px;
+  }
+
+  .zb-menu-heading {
+    align-items: start;
+  }
+
+  .zb-menu-heading h2 {
+    font-size: 32px;
+  }
+
+  .zb-menu-count {
+    display: none;
+  }
+
+  .zb-categories {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .zb-category {
+    flex-shrink: 0;
+  }
+
+  .zb-food-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .zb-food-image-wrap {
+    height: 230px;
+  }
+
+  .zb-food-description {
+    min-height: 0;
+  }
+
+  .zb-bottom-banner {
+    padding: 25px 20px;
+    margin-top: 40px;
+  }
+
+  .zb-bottom-banner h3 {
+    font-size: 21px;
+  }
+
+  .zb-banner-icon {
+    font-size: 42px;
+  }
+}

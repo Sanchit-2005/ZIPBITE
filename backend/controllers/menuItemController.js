@@ -2,8 +2,15 @@ import MenuItem from "../models/menuItem.js";
 import { StatusCodes } from "http-status-codes";
 const addItem = async (req, res) => {
   try {
-    const { restaurant, name, description, price, category, preparationTime } =
-      req.body;
+    const {
+      restaurant,
+      name,
+      description,
+      price,
+      category,
+      preparationTime,
+      image,
+    } = req.body;
 
     // 1. Check whether the item already exists in this restaurant
     const checkItem = await MenuItem.findOne({
@@ -25,6 +32,7 @@ const addItem = async (req, res) => {
       price,
       category,
       preparationTime,
+      image,
     });
 
     // 3. Save the item

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./RestaurantBox.css";
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function MainBox() {
   const [restaurants, setRestaurants] = useState([]);

@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MenuPage from "./pages/menu/MenuPage";
 import ItemDetails from "./pages/menu/ItemDetails";
 import RestaurantPage from "./pages/resturants/RestaurantPage";
+import RestaurantDetails from "./pages/resturants/RestaurantDetails";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
       <Route path="/menu" element={<MenuPage />}></Route>
       <Route path="/items/:id" element={<ItemDetails />} />
       <Route path="/restaurants" element={<RestaurantPage />} />
+      <Route
+        path="/restaurants/:restaurantId"
+        element={<RestaurantDetails />}
+      />
     </Routes>
   );
 }

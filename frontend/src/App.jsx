@@ -4,15 +4,21 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
 import "./App.css";
 import Home from "./pages/Home";
+import AuthenticationPage from "./pages/AuthenticationPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MenuPage from "./pages/menu/MenuPage";
+import ItemDetails from "./pages/menu/ItemDetails";
+import RestaurantPage from "./pages/resturants/RestaurantPage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/home" element={<Home />}></Route>
+      <Route path="/auth" element={<AuthenticationPage />}></Route>
+      <Route path="/menu" element={<MenuPage />}></Route>
+      <Route path="/items/:id" element={<ItemDetails />} />
+      <Route path="/restaurants" element={<RestaurantPage />} />
+    </Routes>
   );
 }
 

@@ -1,113 +1,203 @@
-import React from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../Navbar.css";
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
+import { Authcontext } from "../context/Authcontext";
+import { useContext } from "react";
+const navLinks = [
+  { label: "Home", path: "/home" },
+  { label: "Menu", path: "/menu" },
+  { label: "Restaurants", path: "/restaurants" },
+  { label: "Offers", path: "/offers" },
+  { label: "FAQ", path: "/faq" },
+  { label: "Contact", path: "/contact" },
+];
 
 export default function Navbar() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    const query = searchQuery.trim();
+    if (!query) return;
+
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+  };
+  const { isAuthenticated, handleLogout } = useContext(Authcontext);
+
   return (
-    <nav className="navbar navbar-expand-md bg-body-tertiary">
-      <div className="container-fluid">
-        <img src="./logox.png" alt="" style={{height:"100px"}}/>
+    <nav className="zipbite-navbar">
+      <div className="zipbite-navbar-inner">
+        {/* Logo */}
+        <Link to="/home" className="zipbite-brand">
+          <img src="/logox.png" alt="ZIPBITE" />
+        </Link>
 
-        <button
-          className="btn btn-outline-secondary navbar-toggler"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#navbarDrawer"
-          aria-controls="navbarDrawer"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" aria-hidden="true"></span>
-        </button>
-
-        <div
-          className="offcanvas offcanvas-end"
-          tabIndex={-1}
-          id="navbarDrawer"
-          aria-labelledby="navbarDrawerLabel"
-        >
-          <div className="offcanvas-header">
-            <h5 className="offcanvas-title" id="navbarDrawerLabel">
-              Menu
-            </h5>
-
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
-          </div>
-
-          <div className="offcanvas-body">
-            <ul className="navbar-nav me-auto mb-2 mb-md-0">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  Home
-                </a>
+        {/* Desktop navigation */}
+        <div className="zipbite-desktop">
+          <ul className="zipbite-nav-links">
+            {navLinks.map((link) => (
+              <li key={link.path}>
+                <Link to={link.path}>{link.label}</Link>
               </li>
+            ))}
+          </ul>
 
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Link
-                </a>
-              </li>
-
-              <li className="nav-item dropdown">
-                <button
-                  className="nav-link dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Menu
-                </button>
-
-                <ul className="dropdown-menu">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Action
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
-                    </a>
-                  </li>
-                </ul>
-              </li>
-
-              <li className="nav-item">
-                <span className="nav-link disabled" aria-disabled="true">
-                  Disabled
-                </span>
-              </li>
-            </ul>
-
+          <div className="zipbite-actions">
             <form
-              className="d-flex gap-2"
+              className="zipbite-search"
               role="search"
-              onSubmit={(event) => event.preventDefault()}
+              onSubmit={handleSearch}
             >
               <input
-                className="form-control"
                 type="search"
-                placeholder="Search"
-                aria-label="Search"
+                placeholder="Search food..."
+                aria-label="Search food or restaurant"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
               />
 
-              <button className="btn btn-secondary" type="submit">
-                Search
+              <button type="submit" aria-label="Search">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m16 16 4 4" />
+                </svg>
               </button>
             </form>
+
+            {isAuthenticated ? (
+              <button
+                type="button"
+                className="zipbite-login"
+                onClick={handleLogout}
+              >
+                Logout <LogoutIcon/>
+              </button>
+            ) : (
+              <Link to="/auth" className="zipbite-login">
+                Login <LoginIcon/>
+              </Link>
+            )}
           </div>
         </div>
+
+        {/* Mobile menu toggle */}
+        <button
+          type="button"
+          className="zipbite-menu-toggle"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          onClick={() => {
+            const drawer = document.getElementById("zipbiteMobileDrawer");
+            if (drawer) {
+              drawer.classList.toggle("is-open");
+              const isOpen = drawer.classList.contains("is-open");
+              document.body.classList.toggle("zipbite-menu-open", isOpen);
+              document
+                .querySelector(".zipbite-menu-toggle")
+                ?.setAttribute("aria-expanded", String(isOpen));
+            }
+          }}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      <div className="zipbite-mobile-drawer" id="zipbiteMobileDrawer">
+        <div className="zipbite-mobile-header">
+          <span>Explore ZIPBITE</span>
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => {
+              document
+                .getElementById("zipbiteMobileDrawer")
+                ?.classList.remove("is-open");
+              document.body.classList.remove("zipbite-menu-open");
+              document
+                .querySelector(".zipbite-menu-toggle")
+                ?.setAttribute("aria-expanded", "false");
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
+        <form
+          className="zipbite-search zipbite-mobile-search"
+          role="search"
+          onSubmit={handleSearch}
+        >
+          <input
+            type="search"
+            placeholder="Search food..."
+            aria-label="Search food or restaurant"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+          <button type="submit" aria-label="Search">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m16 16 4 4" />
+            </svg>
+          </button>
+        </form>
+
+        <ul className="zipbite-mobile-links">
+          {navLinks.map((link) => (
+            <li key={link.path}>
+              <Link
+                to={link.path}
+                onClick={() => {
+                  document
+                    .getElementById("zipbiteMobileDrawer")
+                    ?.classList.remove("is-open");
+                  document.body.classList.remove("zipbite-menu-open");
+                  document
+                    .querySelector(".zipbite-menu-toggle")
+                    ?.setAttribute("aria-expanded", "false");
+                }}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <Link
+          to="/auth"
+          className="zipbite-login zipbite-mobile-login"
+          onClick={() => {
+            document
+              .getElementById("zipbiteMobileDrawer")
+              ?.classList.remove("is-open");
+            document.body.classList.remove("zipbite-menu-open");
+          }}
+        >
+          Login
+        </Link>
       </div>
     </nav>
   );

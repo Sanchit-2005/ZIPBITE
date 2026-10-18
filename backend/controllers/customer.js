@@ -10,7 +10,8 @@ const login = async (req, res) => {
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ message: "User not found" });
-  }i
+  }
+
   const checkPass = await bcrypt.compare(password, checkUser.password);
   if (!checkPass) {
     return res
@@ -24,7 +25,7 @@ const login = async (req, res) => {
       expiresIn: "1h",
     },
   );
-  res.status(StatusCodes.OK).json({ token, message: "Welcome Back" });
+  res.status(StatusCodes.ACCEPTED).json({ token, message: "Welcome Back" });
 };
 
 const register = async (req, res) => {

@@ -1,0 +1,496 @@
+.zip-item-page {
+  min-height: 100vh;
+  padding: 6px 12px 0;
+  background: #e1d9d2;
+  color: #292722;
+}
+
+.zip-item-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  background: #faf9f6;
+  overflow: hidden;
+}
+
+/* Breadcrumb */
+
+.zip-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px 4.3% 27px;
+  font-size: 12px;
+  color: #88837c;
+}
+
+.zip-breadcrumb button {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: #88837c;
+}
+
+.zip-breadcrumb button:hover {
+  color: #c74720;
+}
+
+.breadcrumb-current {
+  color: #302d28;
+  font-weight: 700;
+}
+
+/* Main layout */
+
+.zip-item-main {
+  padding: 0 4.3% 42px;
+}
+
+.zip-image-panel {
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 27px;
+  background: #f0ede7;
+}
+
+.zip-item-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.zip-image-category {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.zip-image-category.veg {
+  color: #21854a;
+}
+
+.zip-image-category.nonveg {
+  color: #d93636;
+}
+
+.zip-favorite {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e6e2dc;
+  border-radius: 50%;
+  background: white;
+  font-size: 27px;
+  line-height: 1;
+  color: #37332e;
+}
+
+.zip-favorite.favorited,
+.zip-mobile-favorite.favorited {
+  color: #c74720;
+}
+
+/* Item information */
+
+.zip-item-info {
+  padding: 0 0 5px;
+}
+
+.zip-item-eyebrow {
+  margin-bottom: 7px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: #79756e;
+}
+
+.zip-item-eyebrow span {
+  margin: 0 4px;
+}
+
+.zip-item-title {
+  margin: 0 0 9px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  overflow-wrap: anywhere;
+}
+
+.zip-rating-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 11px;
+}
+
+.zip-stars {
+  color: #c74720;
+  font-size: 18px;
+}
+
+.zip-muted {
+  color: #88837c;
+}
+
+.zip-prep-time {
+  color: #77736c;
+  margin-left: 7px;
+}
+
+.zip-price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.zip-price {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.zip-availability {
+  padding: 6px 11px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.zip-availability.available {
+  color: #21854a;
+  background: #e7f6eb;
+}
+
+.zip-availability.unavailable {
+  color: #b42318;
+  background: #ffebe9;
+}
+
+.zip-item-description {
+  margin-bottom: 15px;
+  color: #79756e;
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.zip-dietary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.zip-dietary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.zip-dietary.veg {
+  background: #e7f6eb;
+  color: #21854a;
+}
+
+.zip-dietary.nonveg {
+  background: #ffebeb;
+  color: #d93636;
+}
+
+.zip-dietary.vegan {
+  background: #edf5df;
+  color: #527c23;
+}
+
+.dietary-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Quantity and cart */
+
+.zip-option-group {
+  margin-bottom: 17px;
+}
+
+.zip-option-group h6 {
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.zip-purchase-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.zip-quantity {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 109px;
+  height: 41px;
+  border: 1px solid #e4dfd8;
+  border-radius: 30px;
+}
+
+.zip-quantity button {
+  width: 30px;
+  height: 35px;
+  border: 0;
+  background: transparent;
+  color: #302d28;
+  font-size: 23px;
+}
+
+.zip-quantity button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.zip-quantity span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.zip-add-cart {
+  flex: 1;
+  min-width: 0;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 30px;
+  background: #c74720;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  transition: background 0.2s ease;
+}
+
+.zip-add-cart:hover:not(:disabled) {
+  background: #a93817;
+}
+
+.zip-add-cart:disabled,
+.zip-order-now:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.zip-mobile-favorite {
+  display: none;
+}
+
+.zip-order-now {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 1px;
+  border: 1.5px solid #39352f;
+  border-radius: 30px;
+  background: transparent;
+  color: #302d28;
+  font-size: 12px;
+  font-weight: 800;
+  transition: 0.2s ease;
+}
+
+.zip-order-now:hover:not(:disabled) {
+  background: #302d28;
+  color: white;
+}
+
+.zip-delivery-info {
+  margin-top: 15px;
+}
+
+.zip-delivery-info p {
+  margin-bottom: 6px;
+  color: #827e76;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.zip-delivery-info p span {
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.zip-delivery-info .zip-delivery-note {
+  padding-left: 20px;
+}
+
+/* Bottom tabs */
+
+.zip-extra-section {
+  min-height: 175px;
+  padding: 0 4.3% 28px;
+  background: #f1eee8;
+}
+
+.zip-tabs {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid #e8e3dc;
+  scrollbar-width: none;
+}
+
+.zip-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.zip-tab {
+  position: relative;
+  flex: 1;
+  min-width: 120px;
+  padding: 21px 12px 17px;
+  border: 0;
+  background: transparent;
+  color: #827e76;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.zip-tab.active {
+  color: #302d28;
+  font-weight: 800;
+}
+
+.zip-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 28px;
+  height: 2px;
+  background: #c74720;
+  transform: translateX(-50%);
+}
+
+.zip-tab-content {
+  max-width: 550px;
+  padding-top: 16px;
+}
+
+.zip-tab-content h3 {
+  margin-bottom: 9px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.zip-tab-content p {
+  margin: 0;
+  color: #827e76;
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+/* Loading */
+
+.item-loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #77736c;
+}
+
+/* Responsive */
+
+@media (max-width: 991px) {
+  .zip-image-panel {
+    height: 390px;
+  }
+
+  .zip-item-info {
+    padding-top: 5px;
+  }
+
+  .zip-item-main {
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 575px) {
+  .zip-item-page {
+    padding: 0;
+  }
+
+  .zip-breadcrumb {
+    gap: 8px;
+    padding: 17px 18px 20px;
+    font-size: 11px;
+  }
+
+  .zip-item-main {
+    padding: 0 18px 28px;
+  }
+
+  .zip-image-panel {
+    height: 310px;
+    border-radius: 21px;
+  }
+
+  .zip-item-title {
+    font-size: 30px;
+  }
+
+  .zip-purchase-row {
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .zip-quantity {
+    min-width: 110px;
+  }
+
+  .zip-add-cart {
+    flex: 1;
+  }
+
+  .zip-mobile-favorite {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 41px;
+    height: 41px;
+    border: 1px solid #e4dfd8;
+    border-radius: 50%;
+    background: white;
+    font-size: 24px;
+  }
+
+  .zip-extra-section {
+    padding: 0 18px 25px;
+  }
+
+  .zip-tab {
+    min-width: 112px;
+    padding: 18px 10px 15px;
+    font-size: 11px;
+  }
+}

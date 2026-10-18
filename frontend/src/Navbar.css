@@ -1,0 +1,354 @@
+
+/* Main navbar */
+.zipbite-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #f0eeeb;
+  box-shadow: 0 4px 18px rgba(35, 27, 17, 0.05);
+  font-family: Arial, sans-serif;
+}
+
+.zipbite-navbar,
+.zipbite-navbar * {
+  box-sizing: border-box;
+}
+
+.zipbite-navbar-inner {
+  width: 100%;
+  max-width: 1600px;
+  min-height: 88px;
+  margin: 0 auto;
+  padding: 10px clamp(16px, 4vw, 60px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Logo */
+.zipbite-brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.zipbite-brand img {
+  display: block;
+  width: auto;
+  height: 70px;
+  max-width: 155px;
+  object-fit: contain;
+}
+
+/* Desktop layout */
+.zipbite-desktop {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.zipbite-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 1.5vw, 28px);
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.zipbite-nav-links li {
+  margin: 0;
+  padding: 0;
+}
+
+.zipbite-nav-links a {
+  display: inline-block;
+  color: #333333;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 12px 0;
+  transition: color 0.2s ease;
+}
+
+.zipbite-nav-links a:hover,
+.zipbite-nav-links a:focus-visible {
+  color: #f06428;
+}
+
+/* Search + login */
+.zipbite-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.zipbite-search {
+  display: flex;
+  align-items: center;
+  width: clamp(170px, 17vw, 240px);
+  min-width: 0;
+  padding: 4px 5px 4px 15px;
+  border: 1px solid #e9e5e1;
+  border-radius: 30px;
+  background: #f8f8f8;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.zipbite-search:focus-within {
+  border-color: #f06428;
+  box-shadow: 0 0 0 3px rgba(240, 100, 40, 0.1);
+}
+
+.zipbite-search input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 9px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #242424;
+  font-size: 14px;
+}
+
+.zipbite-search input::placeholder {
+  color: #898989;
+}
+
+.zipbite-search input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.zipbite-search button {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff0e7;
+  color: #ed5b22;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.zipbite-search button:hover {
+  background: #f06428;
+  color: #ffffff;
+}
+
+/* Login button */
+.zipbite-login {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 23px;
+  border: 1px solid #f06428;
+  border-radius: 30px;
+  background: #f06428;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.zipbite-login:hover {
+  background: #d94d17;
+  border-color: #d94d17;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Hide mobile controls on desktop */
+.zipbite-menu-toggle,
+.zipbite-mobile-drawer {
+  display: none;
+}
+
+/* Medium-width screens */
+@media (min-width: 768px) and (max-width: 1150px) {
+  .zipbite-navbar-inner {
+    gap: 16px;
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .zipbite-brand img {
+    height: 60px;
+    max-width: 120px;
+  }
+
+  .zipbite-desktop {
+    gap: 12px;
+  }
+
+  .zipbite-nav-links {
+    gap: 12px;
+  }
+
+  .zipbite-nav-links a {
+    font-size: 14px;
+  }
+
+  .zipbite-search {
+    width: 165px;
+  }
+
+  .zipbite-login {
+    padding: 0 16px;
+  }
+}
+
+/* Mobile navigation */
+@media (max-width: 767.98px) {
+  .zipbite-navbar-inner {
+    min-height: 72px;
+    padding: 8px 18px;
+    gap: 12px;
+  }
+
+  .zipbite-brand img {
+    height: 55px;
+    max-width: 125px;
+  }
+
+  .zipbite-desktop {
+    display: none;
+  }
+
+  .zipbite-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    padding: 10px;
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+  }
+
+  .zipbite-menu-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: #282828;
+  }
+
+  .zipbite-mobile-drawer {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1100;
+    width: min(88vw, 360px);
+    height: 100dvh;
+    padding: 22px;
+    overflow-y: auto;
+    background: #ffffff;
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.12);
+    transform: translateX(110%);
+    visibility: hidden;
+    transition:
+      transform 0.25s ease,
+      visibility 0.25s ease;
+  }
+
+  .zipbite-mobile-drawer.is-open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .zipbite-mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .zipbite-mobile-header button {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: #f5f5f5;
+    cursor: pointer;
+  }
+
+  .zipbite-mobile-search {
+    width: 100%;
+    margin: 22px 0;
+  }
+
+  .zipbite-mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .zipbite-mobile-links a {
+    display: block;
+    padding: 13px 12px;
+    border-radius: 9px;
+    color: #333333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .zipbite-mobile-links a:hover {
+    background: #fff0e7;
+    color: #f06428;
+  }
+
+  .zipbite-mobile-login {
+    width: 100%;
+    margin-top: 22px;
+  }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .zipbite-navbar *,
+  .zipbite-mobile-drawer {
+    transition: none !important;
+  }
+}

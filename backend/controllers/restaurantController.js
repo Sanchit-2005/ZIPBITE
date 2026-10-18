@@ -270,6 +270,27 @@ const filters = async (req, res) => {
     });
   }
 };
+const showAllRestaurants = async (req, res) => {
+  try {
+    const restaurants = await Restaurant.find({
+      isActive: true,
+      isApproved: true,
+    }).sort({ createdAt: -1 });
+
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      count: restaurants.length,
+      restaurants,
+    });
+  } catch (error) {
+    console.error("Error fetching restaurants:", error);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Failed to fetch restaurants",
+    });
+  }
+};
 
 export {
   registerRestaurant,
@@ -279,4 +300,5 @@ export {
   getNearbyRestaurant,
   searchRestaurant,
   filters,
+  showAllRestaurants,
 };

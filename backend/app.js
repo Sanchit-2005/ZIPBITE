@@ -8,6 +8,7 @@ import menuRoute from "./routes/menuItemsRoute.js";
 import searchBox from "./routes/searchRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
+import cors from "cors";
 const app = express();
 dotenv.config();
 
@@ -21,6 +22,14 @@ mongoose
     console.log("database is not connected");
     throw e;
   });
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.use(express.json());
 
 app.use("/users", userRouter);
@@ -28,7 +37,7 @@ app.use("/restaurants", restaurantRoute);
 app.use("/api", menuRoute);
 app.use("/searchbox", searchBox);
 app.use("/apiV1", cartRoute);
-app.use("/apiV2",orderRoute)
+app.use("/apiV2", orderRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`app is listening on port ${process.env.PORT} `);

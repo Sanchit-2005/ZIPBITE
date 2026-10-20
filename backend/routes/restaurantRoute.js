@@ -4,7 +4,6 @@ import {
   editRestaurant,
   deleteRestaurant,
   getNearbyRestaurant,
-  searchRestaurant,
   showAllRestaurants,
 } from "../controllers/restaurantController.js";
 import { Router } from "express";

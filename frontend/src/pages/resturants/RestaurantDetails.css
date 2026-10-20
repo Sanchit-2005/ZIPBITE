@@ -1,3 +1,8 @@
+/* ========================================
+   ZIPBITE - RESTAURANT DETAILS PAGE (v3)
+   Keeps your original look; only fixes
+   the problem areas.
+======================================== */
 
 .zb-page {
   min-height: 100vh;
@@ -10,6 +15,10 @@
   max-width: 1240px;
 }
 
+/* ========================================
+   BACK BUTTON
+======================================== */
+
 .zb-back {
   border: 0;
   background: transparent;
@@ -17,6 +26,8 @@
   font-weight: 600;
   margin-bottom: 22px;
   padding: 8px 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
 .zb-back span {
@@ -27,7 +38,10 @@
   color: #f06428;
 }
 
-/* Hero */
+/* ========================================
+   RESTAURANT HERO SECTION
+======================================== */
+
 .zb-hero {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -43,6 +57,7 @@
 .zb-hero-content {
   position: relative;
   z-index: 1;
+  min-width: 0;
 }
 
 .zb-eyebrow,
@@ -112,7 +127,9 @@
   font-size: 14px;
   font-weight: 700;
   margin-top: 18px;
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .zb-hero-button:hover {
@@ -131,6 +148,7 @@
   width: 100%;
   height: 340px;
   object-fit: cover;
+  object-position: center;
   border-radius: 48% 48% 28px 28px;
   box-shadow: 0 22px 50px #9e573426;
   transform: rotate(2deg);
@@ -168,7 +186,10 @@
   font-size: 16px;
 }
 
-/* Menu heading */
+/* ========================================
+   MENU HEADING
+======================================== */
+
 .zb-menu-section {
   padding-top: 68px;
   scroll-margin-top: 25px;
@@ -215,7 +236,10 @@
   color: #81776e;
 }
 
-/* Search and category filter */
+/* ========================================
+   SEARCH BAR
+======================================== */
+
 .zb-search-wrap {
   display: flex;
   align-items: center;
@@ -227,6 +251,14 @@
   height: 54px;
   max-width: 500px;
   box-shadow: 0 5px 20px #37200a06;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.zb-search-wrap:focus-within {
+  border-color: #f06428;
+  box-shadow: 0 0 0 3px #f0642815;
 }
 
 .zb-search-wrap > span {
@@ -241,13 +273,23 @@
   outline: 0;
   background: transparent;
   font-size: 14px;
+  color: #25221f;
+}
+
+.zb-search-wrap input::placeholder {
+  color: #a49a90;
 }
 
 .zb-search-wrap button {
   border: 0;
   background: transparent;
   color: #777;
+  cursor: pointer;
 }
+
+/* ========================================
+   CATEGORY FILTERS
+======================================== */
 
 .zb-categories {
   display: flex;
@@ -264,7 +306,11 @@
   padding: 10px 18px;
   font-size: 13px;
   font-weight: 650;
-  transition: 0.2s;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .zb-category:hover,
@@ -274,69 +320,121 @@
   color: white;
 }
 
-/* Food cards */
+/* ========================================
+   FOOD GRID (3 columns, same as before)
+======================================== */
+
 .zb-food-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 25px;
+  align-items: stretch;
 }
 
+/* ========================================
+   FOOD CARD
+======================================== */
+
 .zb-food-card {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   background: white;
   border: 1px solid #f0eae3;
   border-radius: 20px;
   overflow: hidden;
-  transition: transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 6px 20px #40240e0a;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .zb-food-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 18px 38px #40240e12;
+  box-shadow: 0 18px 38px #40240e18;
 }
 
-.zb-food-image-wrap {
-  height: 220px;
+/* ========================================
+   FOOD IMAGES - FULL-WIDTH RECTANGLE
+   No circles/ovals: every radius, shadow
+   and transform is forced off so global or
+   leftover rules (e.g. the hero image style)
+   cannot override it.
+======================================== */
+
+.zb-food-card .zb-food-image-wrap {
   position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
   overflow: hidden;
   background: #f7eee5;
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
-.zb-food-image {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  transition: transform 0.4s;
+.zb-food-card .zb-food-image-wrap img,
+.zb-food-card .zb-food-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  transform: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transition: transform 0.4s ease;
 }
 
+.zb-food-card:hover .zb-food-image-wrap img,
 .zb-food-card:hover .zb-food-image {
-  transform: scale(1.05);
+  transform: scale(1.05) !important;
 }
 
 .zb-food-placeholder {
+  width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
   font-size: 70px;
+  background: #fff0e5;
 }
+
+/* ========================================
+   FOOD CATEGORY BADGE
+======================================== */
 
 .zb-food-badge {
   position: absolute;
   top: 14px;
   left: 14px;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  max-width: calc(100% - 28px);
   background: #fff;
   border-radius: 7px;
   padding: 7px 10px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 750;
-  box-shadow: 0 3px 12px #0000000c;
+  box-shadow: 0 3px 12px #00000014;
+  overflow-wrap: anywhere;
 }
 
 .zb-food-badge > span {
+  flex-shrink: 0;
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -347,18 +445,27 @@
   background: #e33d3d;
 }
 
+/* ========================================
+   FOOD DETAILS
+======================================== */
+
 .zb-food-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding: 19px;
 }
 
 .zb-food-title-row {
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: baseline;
   gap: 10px;
 }
 
 .zb-food-title-row h3 {
+  flex: 1;
+  min-width: 0;
   font-size: 17px;
   line-height: 1.4;
   font-weight: 800;
@@ -367,24 +474,32 @@
 }
 
 .zb-price {
+  flex-shrink: 0;
   color: #f06428;
   font-size: 17px;
+  font-weight: 800;
   white-space: nowrap;
 }
 
 .zb-food-description {
-  color: #847a70;
-  font-size: 12px;
-  line-height: 1.7;
-  margin: 12px 0 20px;
-  min-height: 41px;
+  color: #6f655c;
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 10px 0 18px;
+  min-height: 43px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+/* ========================================
+   FOOD CARD FOOTER
+======================================== */
+
 .zb-food-footer {
+  margin-top: auto;
   border-top: 1px solid #f2ece5;
   padding-top: 15px;
   display: flex;
@@ -399,22 +514,34 @@
   white-space: nowrap;
 }
 
+/* Same soft peach style as before, with darker text for contrast */
 .zb-add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 0;
   background: #fff0e5;
-  color: #e75a21;
+  color: #c8430f;
   border-radius: 9px;
-  padding: 10px 12px;
+  padding: 10px 14px;
   font-size: 12px;
   font-weight: 800;
   white-space: nowrap;
-  transition: 0.2s;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .zb-add-button:hover {
   background: #f06428;
   color: white;
 }
+
+/* ========================================
+   EMPTY SEARCH RESULTS
+======================================== */
 
 .zb-empty {
   text-align: center;
@@ -442,9 +569,17 @@
   border: 0;
   border-radius: 10px;
   padding: 11px 18px;
+  cursor: pointer;
 }
 
-/* Bottom banner */
+.zb-empty button:hover {
+  background: #d94c17;
+}
+
+/* ========================================
+   BOTTOM PROMOTIONAL BANNER
+======================================== */
+
 .zb-bottom-banner {
   display: flex;
   align-items: center;
@@ -480,7 +615,10 @@
   font-size: 65px;
 }
 
-/* Loading */
+/* ========================================
+   LOADING STATE
+======================================== */
+
 .zb-loading {
   min-height: 65vh;
   display: flex;
@@ -491,7 +629,10 @@
   color: #74685d;
 }
 
-/* Responsive */
+/* ========================================
+   TABLET
+======================================== */
+
 @media (max-width: 991px) {
   .zb-hero {
     padding: 32px;
@@ -507,6 +648,10 @@
     gap: 18px;
   }
 }
+
+/* ========================================
+   MOBILE
+======================================== */
 
 @media (max-width: 600px) {
   .zb-page {
@@ -560,6 +705,7 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     padding-bottom: 8px;
+    scrollbar-width: thin;
   }
 
   .zb-category {
@@ -571,12 +717,12 @@
     gap: 20px;
   }
 
-  .zb-food-image-wrap {
-    height: 230px;
-  }
-
   .zb-food-description {
     min-height: 0;
+  }
+
+  .zb-food-content {
+    padding: 17px;
   }
 
   .zb-bottom-banner {
@@ -590,5 +736,48 @@
 
   .zb-banner-icon {
     font-size: 42px;
+    flex-shrink: 0;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 360px) {
+  .zb-food-title-row {
+    flex-wrap: wrap;
+  }
+
+  .zb-food-footer {
+    flex-wrap: wrap;
+  }
+
+  .zb-hero-meta span {
+    padding: 8px 10px;
+  }
+
+  .zb-bottom-banner {
+    padding: 20px 15px;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .zb-page * {
+    transition: none !important;
+  }
+
+  .zb-food-card:hover,
+  .zb-hero-button:hover {
+    transform: none;
+  }
+
+  .zb-food-card:hover .zb-food-image-wrap img,
+  .zb-food-card:hover .zb-food-image {
+    transform: none !important;
   }
 }

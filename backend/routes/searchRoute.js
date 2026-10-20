@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { searchRestaurant, filters } from "../controllers/restaurantController.js";
+import { searchAll, filters } from "../controllers/restaurantController.js";
 const router = Router();
-router.route("/search").get(searchRestaurant);
+router.route("/search").get(searchAll);
 router.route("/search/filter").get(filters);
  export default router;

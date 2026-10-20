@@ -2,6 +2,7 @@ import Restaurant from "../models/restaurant.js";
 import { StatusCodes } from "http-status-codes";
 import geocodeAddress from "../utils/geocodeAddress.js";
 import MenuItem from "../models/menuItem.js";
+
 const registerRestaurant = async (req, res) => {
   try {
     const { name, email, owner, phone, address } = req.body;
@@ -170,32 +171,27 @@ const getNearbyRestaurant = async (req, res) => {
   }
 };
 
-const searchRestaurant = async (req, res) => {
-  const Restaurant = require("../models/restaurant");
-  const MenuItem = require("../models/menuItem");
+const searchAll = async (req, res) => {
+  try {
+    const q = req.query.q?.trim();
+    if (!q)
+      return res.status(400).json({ message: "Please enter a search term" });
 
-  const searchAll = async (req, res) => {
-    try {
-      const q = req.query.q?.trim();
-      if (!q)
-        return res.status(400).json({ message: "Please enter a search term" });
+    const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
 
-      const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    const [restaurants, menuItems] = await Promise.all([
+      Restaurant.find({
+        $or: [{ name: regex }, { cuisineTypes: regex }],
+      }).limit(10),
+      MenuItem.find({ $or: [{ name: regex }, { category: regex }] })
+        .populate("restaurant", "name image")
+        .limit(10),
+    ]);
 
-      const [restaurants, menuItems] = await Promise.all([
-        Restaurant.find({
-          $or: [{ name: regex }, { cuisineTypes: regex }],
-        }).limit(10),
-        MenuItem.find({ $or: [{ name: regex }, { category: regex }] })
-          .populate("restaurant", "name image")
-          .limit(10),
-      ]);
-
-      res.json({ restaurants, menuItems });
-    } catch (error) {
-      res.status(500).json({ message: "Failed to search" });
-    }
-  };
+    res.json({ restaurants, menuItems });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to search" });
+  }
 };
 
 const filters = async (req, res) => {
@@ -298,7 +294,7 @@ export {
   editRestaurant,
   deleteRestaurant,
   getNearbyRestaurant,
-  searchRestaurant,
+  searchAll,
   filters,
   showAllRestaurants,
 };

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Navbar.css";
-import LogoutIcon from '@mui/icons-material/Logout';
-import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
 import { Authcontext } from "../context/Authcontext";
 import { useContext } from "react";
 const navLinks = [
@@ -82,11 +82,11 @@ export default function Navbar() {
                 className="zipbite-login"
                 onClick={handleLogout}
               >
-                Logout <LogoutIcon/>
+                Logout <LogoutIcon />
               </button>
             ) : (
               <Link to="/auth" className="zipbite-login">
-                Login <LoginIcon/>
+                Login <LoginIcon />
               </Link>
             )}
           </div>

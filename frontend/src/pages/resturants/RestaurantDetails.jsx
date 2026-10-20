@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./RestaurantDetails.css";
 import InfoIcon from "@mui/icons-material/Info";
+import LocationPinIcon from "@mui/icons-material/LocationPin";
+import ExploreIcon from "@mui/icons-material/Explore";
 
 export default function RestaurantDetails() {
   const { restaurantId } = useParams();
@@ -14,6 +16,31 @@ export default function RestaurantDetails() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [fiter, setFiters] = useState([]);
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        console.log("Latitude:", latitude);
+        console.log("Longitude:", longitude);
+      },
+      (error) => {
+        console.error("Location error:", error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      },
+    );
+  };
 
   useEffect(() => {
     const getInfo = async () => {
@@ -113,7 +140,7 @@ export default function RestaurantDetails() {
 
             {restaurant.address && (
               <p className="zb-address">
-                📍{" "}
+                <LocationPinIcon />{" "}
                 {typeof restaurant.address === "object"
                   ? Object.values(restaurant.address).filter(Boolean).join(", ")
                   : restaurant.address}
@@ -121,7 +148,10 @@ export default function RestaurantDetails() {
             )}
 
             <a href="#zb-menu" className="zb-hero-button">
-              Explore menu <span>↘</span>
+              Explore menu{" "}
+              <span>
+                <ExploreIcon />
+              </span>
             </a>
           </div>
 

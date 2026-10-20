@@ -10,6 +10,8 @@ import MenuPage from "./pages/menu/MenuPage";
 import ItemDetails from "./pages/menu/ItemDetails";
 import RestaurantPage from "./pages/resturants/RestaurantPage";
 import RestaurantDetails from "./pages/resturants/RestaurantDetails";
+import SearchMenu from "./pages/Search/SearchMenu";
+import Search from "./pages/Search/Search";
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         path="/restaurants/:restaurantId"
         element={<RestaurantDetails />}
       />
+      <Route path="/search" element={<Search />}></Route>
     </Routes>
   );
 }

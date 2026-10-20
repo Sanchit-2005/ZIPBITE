@@ -1,10 +1,10 @@
-import React, { useEffect, useState  } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../MainBox.css";
 
 export default function MainBox() {
-    const navigate=useNavigate();
+  const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
 

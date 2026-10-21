@@ -25,7 +25,15 @@ const login = async (req, res) => {
       expiresIn: "1h",
     },
   );
-  res.status(StatusCodes.ACCEPTED).json({ token, message: "Welcome Back" });
+  return res.status(StatusCodes.ACCEPTED).json({
+    message: "Welcome Back",
+    token,
+    user: {
+      _id: checkUser._id,
+      name: checkUser.name,
+      email: checkUser.email,
+    },
+  });
 };
 
 const register = async (req, res) => {

@@ -4,7 +4,8 @@ import asyncWrapper from "../asyncWrap.js";
 
 const addItem = async (req, res) => {
   try {
-    const { customerId, restaurantId, items } = req.body;
+    const { restaurantId, items } = req.body;
+    const customerId = req.user.id;
 
     if (!customerId || !restaurantId) {
       return res
@@ -171,7 +172,7 @@ const removeItem = async (req, res) => {
 };
 
 const deleteCart = asyncWrapper(async (req, res) => {
-  const { customerId } = req.body;
+  const customerId = req.user.id;
 
   const cart = await Cart.findOne({ customer: customerId });
 

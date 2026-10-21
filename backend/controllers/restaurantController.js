@@ -222,7 +222,7 @@ const filters = async (req, res) => {
     }
 
     // Build filters dynamically
-    const filter = {};
+    const filter = { isActive: true, isAvailable: true };
 
     if (category) {
       filter.category = category;

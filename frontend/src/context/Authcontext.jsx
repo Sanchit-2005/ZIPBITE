@@ -10,7 +10,10 @@ const client = axios.create({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [userData, setUserdata] = useState(null);
+  const [userData, setUserdata] = useState(() => {
+    const savedUser = localStorage.getItem("userData");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const router = useNavigate();
 
   const [isAuthenticated, setIsAuthenticated] = useState(() =>
@@ -35,18 +38,25 @@ export const AuthProvider = ({ children }) => {
 
     if (request.status === httpStatus.ACCEPTED) {
       localStorage.setItem("token", request.data.token);
+
+      setUserdata(request.data.user);
+
+      localStorage.setItem("userData", JSON.stringify(request.data.user));
+
       setIsAuthenticated(true);
       router("/home");
     }
 
     return request.data.message;
   };
-   const handleLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+
     setUserdata(null);
     setIsAuthenticated(false);
 
-    navigate("/");
+    router("/home");
   };
 
   return (
@@ -58,7 +68,7 @@ export const AuthProvider = ({ children }) => {
         handleRegister,
         isAuthenticated,
         setIsAuthenticated,
-        handleLogout
+        handleLogout,
       }}
     >
       {children}

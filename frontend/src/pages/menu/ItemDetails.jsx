@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Authcontext } from "../../context/Authcontext";
 import axios from "axios";
+
 import "../../../src/ItemDetails.css";
 
 export default function ItemDetails() {
+  const { userData, isAuthenticated } = useContext(Authcontext);
+  const token = localStorage.getItem("token");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -69,15 +73,85 @@ export default function ItemDetails() {
   const available = item.isAvailable && item.isActive !== false;
   const price = Number(item.price || 0);
   const totalPrice = price * quantity;
+  const handleAddToCart = async () => {
+    try {
+      if (!isAuthenticated || !token) {
+        alert("Please login first");
+        navigate("/auth");
+        return;
+      }
 
-  const handleAddToCart = () => {
-    // Connect this handler to your existing ZIPBITE cart API.
-    console.log("Selected item:", {
-      menuItem: item._id,
-      quantity,
-      price,
-      totalPrice,
-    });
+      if (!userData?._id) {
+        alert("User information is missing. Please log in again.");
+        return navigate("/auth");
+      }
+      const restaurantId = item.restaurant?._id || item.restaurant;
+
+      if (!restaurantId) {
+        alert("This item is not linked to a restaurant.");
+        return;
+      }
+
+      const data = {
+        customerId: userData._id,
+        restaurantId: restaurantId,
+        items: [
+          {
+            menuItem: item._id,
+            quantity: quantity,
+          },
+        ],
+      };
+
+      const response = await axios.post(
+        "http://localhost:8000/apiV1/cart/items",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      console.log("Added to cart:", response.data);
+      alert("Item added to cart successfully!");
+    } catch (err) {
+      if (err.response?.status === 409) {
+        const confirmClear = window.confirm(
+          "Your cart contains items from another restaurant. " +
+            "Do you want to clear your cart and add this item?",
+        );
+
+        if (confirmClear) {
+          try {
+            await axios.delete("http://localhost:8000/apiV1/cart", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            // Retry adding the selected item after clearing the cart
+            await handleAddToCart();
+          } catch (clearError) {
+            console.error(
+              "Failed to clear cart:",
+              clearError.response?.data || clearError.message,
+            );
+
+            alert(
+              clearError.response?.data?.message ||
+                "Could not clear your cart.",
+            );
+          }
+        }
+
+        return;
+      }
+
+      console.error("Add to cart failed:", err.response?.data || err.message);
+
+      alert(err.response?.data?.message || "Failed to add item to cart.");
+    }
   };
 
   const handleOrderNow = () => {

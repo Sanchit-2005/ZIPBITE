@@ -6,6 +6,7 @@ import "../../MainBox.css";
 export default function MainBox() {
   const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState([]);
+  const[fiters,setFiters]=useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -91,6 +92,14 @@ export default function MainBox() {
         <div className="section-heading d-flex align-items-center justify-content-between mb-3">
           <h2>♧ Recommended for You</h2>
           <span>Fresh picks for you</span>
+        </div>
+
+        <div>
+          <h1>Filters</h1>
+          <a href="">veg</a>
+          <a href="">non-veg</a>
+          
+
         </div>
 
         {loading ? (

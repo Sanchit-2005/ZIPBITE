@@ -360,7 +360,7 @@ export default function ItemDetails() {
                 <h3>Nutritional Information</h3>
                 <p>
                   Nutritional details are not currently available for this menu
-                  item.
+                  item
                 </p>
               </>
             )}

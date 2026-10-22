@@ -12,6 +12,7 @@ import RestaurantPage from "./pages/resturants/RestaurantPage";
 import RestaurantDetails from "./pages/resturants/RestaurantDetails";
 import SearchMenu from "./pages/Search/SearchMenu";
 import Search from "./pages/Search/Search";
+import Cart from "./pages/cart/Cart";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         element={<RestaurantDetails />}
       />
       <Route path="/search" element={<Search />}></Route>
+      <Route path="/cart" element={<Cart />}></Route>
     </Routes>
   );
 }

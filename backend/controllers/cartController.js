@@ -71,10 +71,11 @@ const addItem = async (req, res) => {
 
 const showCart = async (req, res) => {
   try {
-    const { customerId } = req.body;
+    const customerId = req.user._id;
 
-    const cart = await Cart.findOne({ customer: customerId });
-
+    const cart = await Cart.findOne({ customer: customerId })
+      .populate("items.menuItem")
+      .populate("restaurant");
     if (!cart) {
       return res
         .status(StatusCodes.NOT_FOUND)
@@ -85,7 +86,7 @@ const showCart = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: "something went wrong" });
   }
 };
 
@@ -123,53 +124,37 @@ const updateCart = async (req, res) => {
     .json({ message: "Updated the quantity of menuItem" });
 };
 
-const removeItem = async (req, res) => {
+const removeItem = asyncWrapper(async (req, res) => {
   try {
-    const { customerId } = req.body;
+    const customerId = req.user.id || req.user._id;
     const { itemId } = req.params;
 
     const cart = await Cart.findOne({ customer: customerId });
-
     if (!cart) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        message: "Cart not found",
-      });
+      return res.status(StatusCodes.NOT_FOUND).json({ message: "Cart not found" });
     }
 
-    const itemExists = cart.items.some(
-      (item) => item.menuItem.toString() === itemId,
-    );
-
+    const itemExists = cart.items.some(item => item.menuItem.toString() === itemId);
     if (!itemExists) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        message: "Item not found in cart",
-      });
+      return res.status(StatusCodes.NOT_FOUND).json({ message: "Item not found in cart" });
     }
 
-    cart.items = cart.items.filter(
-      (item) => item.menuItem.toString() !== itemId,
-    );
+    // Remove the item
+    cart.items = cart.items.filter(item => item.menuItem.toString() !== itemId);
 
     // Reset restaurant when cart becomes empty
-
     if (cart.items.length === 0) {
       cart.restaurant = null;
     }
 
     await cart.save();
 
-    return res.status(StatusCodes.OK).json({
-      message: "Item removed successfully",
-      cart,
-    });
+    return res.status(StatusCodes.OK).json({ message: "Item removed successfully", cart });
   } catch (error) {
     console.error("Remove item error:", error);
-
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: "Failed to remove item",
-    });
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to remove item" });
   }
-};
+});
 
 const deleteCart = asyncWrapper(async (req, res) => {
   const customerId = req.user.id;

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./CartDetail.css";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+const API_URL = "http://localhost:8000/apiV1/cart";
 
 export default function CartDetail() {
   const [cartInfo, setCartInfo] = useState({
@@ -9,14 +14,21 @@ export default function CartDetail() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [removingId, setRemovingId] = useState(null);
+  const [updatingId, setUpdatingId] = useState(null);
 
-  const API_URL = "http://localhost:8000/apiV1/cart";
+  const token = () => localStorage.getItem("token");
+
+  const getItemId = (item) =>
+    typeof item.menuItem === "object" ? item.menuItem?._id : item.menuItem;
+
+  const getPrice = (item) => Number(item.menuItem?.price) || 0;
 
   useEffect(() => {
     const fetchCart = async () => {
-      const token = localStorage.getItem("token");
+      const authToken = token();
 
-      if (!token) {
+      if (!authToken) {
         setError("Please log in to view your cart.");
         setLoading(false);
         return;
@@ -25,13 +37,10 @@ export default function CartDetail() {
       try {
         const response = await axios.get(API_URL, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
           },
         });
 
-        console.log("Cart API response:", response.data);
-
-        // API may return the cart directly or inside a cart property.
         const cart = response.data.cart || response.data;
 
         setCartInfo({
@@ -40,11 +49,7 @@ export default function CartDetail() {
           restaurant: cart.restaurant || null,
         });
       } catch (err) {
-        console.error(
-          "Failed to fetch cart:",
-          err.response?.data || err.message,
-        );
-
+        console.error("Fetch cart error:", err.response?.data || err.message);
         setError(
           err.response?.data?.message ||
             "Unable to load your cart. Please try again.",
@@ -57,160 +62,306 @@ export default function CartDetail() {
     fetchCart();
   }, []);
 
-  // Calculate subtotal.
   const subtotal = cartInfo.items.reduce((total, item) => {
-    const price = Number(item.menuItem?.price) || 0;
-    const quantity = Number(item.quantity) || 0;
-
-    return total + price * quantity;
+    return total + getPrice(item) * (Number(item.quantity) || 1);
   }, 0);
 
-  // Remove an item from the UI only.
+  // Remove item from the backend and update the UI.
   const handleRemoveItem = async (menuItemId) => {
-    const token = localStorage.getItem("token");
+    if (!menuItemId || removingId) return;
 
-    // Remove the item from the cart state.
-    await axios.delete(`http://localhost:8000/apiV1/cart/items/${menuItemId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    setRemovingId(menuItemId);
+    setError("");
 
-    console.log("item deleted !");
-    setCartInfo((previousCart) => ({
-      ...previousCart,
-      items: previousCart.items.filter((item) => {
-        const id =
-          typeof item.menuItem === "object"
-            ? item.menuItem?._id
-            : item.menuItem;
+    try {
+      await axios.delete(`${API_URL}/items/${menuItemId}`, {
+        headers: {
+          Authorization: `Bearer ${token()}`,
+        },
+      });
 
-        return id !== menuItemId;
-      }),
-    }));
+      setCartInfo((previous) => ({
+        ...previous,
+        items: previous.items.filter((item) => getItemId(item) !== menuItemId),
+      }));
+    } catch (err) {
+      console.error("Remove item error:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Unable to remove this item.");
+    } finally {
+      setRemovingId(null);
+    }
   };
+
+  const handleQuantityChange = async (menuItemId, quantity) => {
+    if (!menuItemId || quantity < 1 || updatingId) return;
+
+    const currentItem = cartInfo.items.find(
+      (item) => getItemId(item) === menuItemId,
+    );
+
+    if (!currentItem || Number(currentItem.quantity) === quantity) return;
+
+    setUpdatingId(menuItemId);
+    setError("");
+
+    try {
+      const response = await axios.put(
+        `${API_URL}/items/${menuItemId}`,
+        { quantity },
+        {
+          headers: {
+            Authorization: `Bearer ${token()}`,
+          },
+        },
+      );
+
+      
+      const updatedCart = response.data.cart;
+
+      if (updatedCart && Array.isArray(updatedCart.items)) {
+        setCartInfo((previous) => ({
+          ...previous,
+          ...updatedCart,
+        }));
+      } else {
+       
+        setCartInfo((previous) => ({
+          ...previous,
+          items: previous.items.map((item) =>
+            getItemId(item) === menuItemId ? { ...item, quantity } : item,
+          ),
+        }));
+      }
+    } catch (err) {
+      console.error(
+        "Quantity update error:",
+        err.response?.data || err.message,
+      );
+      setError(
+        err.response?.data?.message ||
+          "Unable to update quantity. Check your backend API.",
+      );
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const restaurantName =
+    typeof cartInfo.restaurant === "object" ? cartInfo.restaurant?.name : null;
+
+  const formatPrice = (amount) =>
+    `₹${Number(amount).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
 
   if (loading) {
     return (
-      <div className="container py-5 text-center">
+      <div className="cart-page cart-message">
+        <div className="cart-loader" />
         <p>Loading your cart...</p>
       </div>
     );
   }
 
-  if (error) {
+  if (error && !cartInfo.items.length) {
     return (
-      <div className="container py-5 text-center">
-        <h3>Cart</h3>
-        <p className="text-danger">{error}</p>
+      <div className="cart-page cart-message">
+        <h2>My Cart</h2>
+        <p className="cart-error">{error}</p>
+        <button
+          className="cart-secondary-btn"
+          onClick={() => (window.location.href = "/")}
+        >
+          Continue Shopping
+        </button>
       </div>
     );
   }
 
   if (cartInfo.items.length === 0) {
     return (
-      <div className="container py-5 text-center">
-        <h2>Your Cart Is Empty</h2>
+      <div className="cart-page cart-message">
+        <div className="empty-cart-icon">
+          <ShoppingCartIcon />
+        </div>
+        <h2>Your cart is empty</h2>
         <p>Add some delicious food to get started!</p>
+        <button
+          className="cart-primary-btn"
+          onClick={() => (window.location.href = "/menu")}
+        >
+          Continue Shopping
+        </button>
       </div>
     );
   }
 
-  const restaurantName =
-    typeof cartInfo.restaurant === "object" ? cartInfo.restaurant?.name : null;
-
   return (
-    <div className="container py-4">
-      <h2 className="mb-4">Your Cart</h2>
+    <main className="cart-page">
+      <div className="cart-header">
+        <h2>My Cart</h2>
+        <button
+          className="continue-shopping-link"
+          onClick={() => window.history.back()}
+        >
+          Continue Shopping
+        </button>
+      </div>
 
-      {restaurantName && <h5 className="mb-3">Restaurant: {restaurantName}</h5>}
+      {restaurantName && (
+        <div className="cart-restaurant">
+          Ordering from <strong>{restaurantName}</strong>
+        </div>
+      )}
 
-      <div className="row">
-        <div className="col-lg-8">
+      {error && <div className="cart-error-banner">{error}</div>}
+
+      <div className="cart-layout">
+        {/* Cart items */}
+        <section className="cart-items-column">
           {cartInfo.items.map((item, index) => {
             const menuItem = item.menuItem;
+            const itemId = getItemId(item);
+            const price = getPrice(item);
+            const quantity = Number(item.quantity) || 1;
 
-            // The backend should populate items.menuItem.
             if (!menuItem || typeof menuItem !== "object") {
               return (
-                <div className="alert alert-warning" key={index}>
-                  Menu item details are missing. Please check your backend
-                  populate("items.menuItem") query.
+                <div className="cart-item-card" key={itemId || index}>
+                  <p>
+                    Menu item details are missing. Check that your backend
+                    populates <code>items.menuItem</code>.
+                  </p>
                 </div>
               );
             }
 
-            const itemId = menuItem._id;
-            const price = Number(menuItem.price) || 0;
-            const quantity = Number(item.quantity) || 1;
-
             return (
-              <div className="card mb-3" key={itemId || index}>
-                <div className="card-body d-flex align-items-center gap-3 flex-wrap">
-                  {menuItem.image && (
+              <article className="cart-item-card" key={itemId || index}>
+                <div className="cart-product-image">
+                  {menuItem.image ? (
                     <img
                       src={menuItem.image}
-                      alt={menuItem.name || "Menu item"}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                      }}
+                      alt={menuItem.name || "Food item"}
                     />
+                  ) : (
+                    <div className="cart-image-placeholder">🍽️</div>
+                  )}
+                </div>
+
+                <div className="cart-product-details">
+                  <h3>{menuItem.name || "Unnamed item"}</h3>
+
+                  {menuItem.description && (
+                    <p className="cart-product-description">
+                      {menuItem.description}
+                    </p>
                   )}
 
-                  <div className="flex-grow-1">
-                    <h5>{menuItem.name || "Unnamed item"}</h5>
+                  <p className="cart-delivery">
+                    <span>✓</span> Freshly prepared
+                  </p>
 
-                    <p className="mb-1">Price: ₹{price}</p>
+                  <p className="cart-returns">
+                    <span>↻</span> Quality assured
+                  </p>
 
-                    <p className="mb-1">Quantity: {quantity}</p>
+                  <div className="cart-product-bottom">
+                    <div className="cart-price">{formatPrice(price)}</div>
 
-                    <p className="mb-0 fw-bold">Total: ₹{price * quantity}</p>
+                    <div className="cart-quantity-control">
+                      <button
+                        aria-label={`Decrease ${menuItem.name} quantity`}
+                        disabled={quantity <= 1 || updatingId !== null}
+                        onClick={() =>
+                          handleQuantityChange(itemId, quantity - 1)
+                        }
+                      >
+                        −
+                      </button>
+
+                      <span>{updatingId === itemId ? "…" : quantity}</span>
+
+                      <button
+                        aria-label={`Increase ${menuItem.name} quantity`}
+                        disabled={updatingId !== null}
+                        onClick={() =>
+                          handleQuantityChange(itemId, quantity + 1)
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-
-                  <button
-                    className="btn btn-outline-danger btn-sm"
-                    onClick={() => handleRemoveItem(itemId)}
-                  >
-                    Remove
-                  </button>
                 </div>
-              </div>
+
+                <button
+                  className="cart-remove-btn"
+                  aria-label={`Remove ${menuItem.name}`}
+                  title="Remove item"
+                  disabled={removingId === itemId}
+                  onClick={() => handleRemoveItem(itemId)}
+                >
+                  {removingId === itemId ? "…" : <DeleteIcon />}
+                </button>
+              </article>
             );
           })}
-        </div>
+        </section>
 
-        <div className="col-lg-4">
-          <div className="card">
-            <div className="card-body">
-              <h4>Order Summary</h4>
+        {/* Order summary */}
+        <aside className="cart-summary">
+          <div className="cart-summary-heading">
+            <h3>Order Summary</h3>
+          </div>
 
-              <div className="d-flex justify-content-between my-3">
-                <span>Subtotal</span>
-                <span>₹{subtotal}</span>
-              </div>
+          <div className="cart-summary-body">
+            <div className="cart-summary-row">
+              <span>
+                Subtotal (
+                {cartInfo.items.reduce(
+                  (sum, item) => sum + (Number(item.quantity) || 1),
+                  0,
+                )}{" "}
+                items)
+              </span>
+              <span>{formatPrice(subtotal)}</span>
+            </div>
 
-              <hr />
+            <div className="cart-summary-row">
+              <span>Delivery fee</span>
+              <span className="cart-free">Free</span>
+            </div>
 
-              <div className="d-flex justify-content-between fw-bold">
-                <span>Total</span>
-                <span>₹{subtotal}</span>
-              </div>
-
-              <button
-                className="btn btn-success w-100 mt-3"
-                onClick={() =>
-                  alert("Connect this button to your checkout page.")
-                }
-              >
-                Proceed to Checkout
-              </button>
+            <div className="cart-summary-row">
+              <span>Estimated tax</span>
+              <span>{formatPrice(0)}</span>
             </div>
           </div>
-        </div>
+
+          <div className="cart-summary-total">
+            <span>Total</span>
+            <strong>{formatPrice(subtotal)}</strong>
+          </div>
+
+          <div className="cart-summary-actions">
+            <button
+              className="cart-primary-btn"
+              onClick={() => (window.location.href = "/order")}
+            >
+              Continue to checkout
+            </button>
+
+            <button
+              className="cart-secondary-btn"
+              onClick={() => window.history.back()}
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </aside>
       </div>
-    </div>
+    </main>
   );
 }

@@ -5,6 +5,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { Authcontext } from "../context/Authcontext";
 import { useContext } from "react";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const navLinks = [
   { label: "Home", path: "/home" },
   { label: "Menu", path: "/menu" },
@@ -12,6 +13,7 @@ const navLinks = [
   { label: "Offers", path: "/offers" },
   { label: "FAQ", path: "/faq" },
   { label: "Contact", path: "/contact" },
+  { label: <ShoppingCartIcon/>, path: "/cart" },
 ];
 
 export default function Navbar() {

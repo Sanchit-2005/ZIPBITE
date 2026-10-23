@@ -91,16 +91,15 @@ const showCart = async (req, res) => {
 };
 
 const updateCart = async (req, res) => {
-  //in case when we update the quantity
   const { itemId } = req.params;
   const { quantity } = req.body;
 
   const cart = await Cart.findOne({ "items.menuItem": itemId });
   if (!cart) {
-    res.status(StatusCodes.NOT_FOUND).json({ message: "Not found cart" });
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "Not found cart" });
   }
-
-  // Step 5: If quantity is zero or less, remove the item
 
   if (quantity <= 0) {
     cart.items = cart.items.filter(
@@ -131,16 +130,24 @@ const removeItem = asyncWrapper(async (req, res) => {
 
     const cart = await Cart.findOne({ customer: customerId });
     if (!cart) {
-      return res.status(StatusCodes.NOT_FOUND).json({ message: "Cart not found" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Cart not found" });
     }
 
-    const itemExists = cart.items.some(item => item.menuItem.toString() === itemId);
+    const itemExists = cart.items.some(
+      (item) => item.menuItem.toString() === itemId,
+    );
     if (!itemExists) {
-      return res.status(StatusCodes.NOT_FOUND).json({ message: "Item not found in cart" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Item not found in cart" });
     }
 
     // Remove the item
-    cart.items = cart.items.filter(item => item.menuItem.toString() !== itemId);
+    cart.items = cart.items.filter(
+      (item) => item.menuItem.toString() !== itemId,
+    );
 
     // Reset restaurant when cart becomes empty
     if (cart.items.length === 0) {
@@ -149,10 +156,14 @@ const removeItem = asyncWrapper(async (req, res) => {
 
     await cart.save();
 
-    return res.status(StatusCodes.OK).json({ message: "Item removed successfully", cart });
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: "Item removed successfully", cart });
   } catch (error) {
     console.error("Remove item error:", error);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to remove item" });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Failed to remove item" });
   }
 });
 

@@ -139,7 +139,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-
+    razorpayOrderId: {
+      type: String,
+      default: null,
+      index: true,
+    },
     orderStatus: {
       type: String,
       enum: [

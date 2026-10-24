@@ -13,6 +13,9 @@ const addItem = async (req, res) => {
         .json({ message: "Customer and restaurant are required" });
     }
 
+    // Ensure we store the restaurant reference on the cart (if a new cart is created)
+    // This will later be populated with the restaurant's name when we return the cart.
+
     if (!Array.isArray(items) || items.length === 0) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -56,6 +59,9 @@ const addItem = async (req, res) => {
       });
     }
 
+    // Populate the restaurant name before sending the response
+    // Populate the restaurant name after saving the cart (Mongoose 6+)
+    await cart.populate({ path: "restaurant", select: "name" });
     return res.status(StatusCodes.OK).json({
       message: "Item added to cart successfully",
       cart,
@@ -69,21 +75,47 @@ const addItem = async (req, res) => {
   }
 };
 
+// backend/controllers/cartController.js
 const showCart = async (req, res) => {
   try {
     const customerId = req.user._id;
 
+    // 1️⃣ Populate items.menuItem and also the nested restaurant inside each menuItem
+    // 2️⃣ Populate the top‑level restaurant and *only* request the name field (lighter payload)
     const cart = await Cart.findOne({ customer: customerId })
-      .populate("items.menuItem")
-      .populate("restaurant");
+      .populate({
+        path: "items.menuItem",
+        populate: { path: "restaurant", select: "name" },
+      })
+      .populate({ path: "restaurant", select: "name" });
+
+    console.log(cart.restaurant);
+
     if (!cart) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "Cart not found" });
     }
 
+    // If the cart was created without a restaurant (e.g. empty cart) but now has items,
+    // copy the restaurant reference from the first item and persist it.
+    if (!cart.restaurant && cart.items.length > 0) {
+      const firstRestaurant = cart.items[0].menuItem?.restaurant;
+      if (firstRestaurant) {
+        cart.restaurant = firstRestaurant._id || firstRestaurant; // keep ObjectId
+        console.log("restaurant name :", cart.restaurant);
+        await cart.save();
+        // Re‑populate after we saved the reference so the response includes the name
+        await cart
+          .populate({ path: "restaurant", select: "name" })
+          .execPopulate();
+      }
+    }
+
+    // Always send the restaurant object (even if null) – the front‑end logic will handle it.
     return res.status(StatusCodes.OK).json(cart);
   } catch (error) {
+    console.error("showCart error:", error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: "something went wrong" });

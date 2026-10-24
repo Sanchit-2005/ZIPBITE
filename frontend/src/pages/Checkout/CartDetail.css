@@ -1,0 +1,384 @@
+/* ==========================================================
+   Checkout.css  (ZipBite)
+   Matches the look of CartDetail.css: Arial, white cards,
+   11px radius, dark primary button, with the brand orange
+   (#f45b0b) used for focus and the key actions only.
+   ========================================================== */
+
+:root {
+  --co-text: #202124;
+  --co-muted: #6b6b6b;
+  --co-border: #e8e8e8;
+  --co-border-strong: #d4d4d4;
+  --co-surface: #ffffff;
+  --co-page: #f7f6f4;
+  --co-brand: #f45b0b;
+  --co-brand-soft: #fff1ea;
+  --co-dark: #191919;
+  --co-danger: #b42318;
+  --co-danger-bg: #fff0ef;
+  --co-green: #148653;
+}
+
+/* ---------- Page shell ---------- */
+
+.checkout-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+  color: var(--co-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.checkout-heading {
+  margin-bottom: 24px;
+}
+
+.checkout-heading h1 {
+  margin: 10px 0 4px;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.checkout-heading p {
+  margin: 0;
+  color: var(--co-muted);
+  font-size: 14px;
+}
+
+.back-button {
+  border: none;
+  background: none;
+  padding: 4px 0;
+  color: var(--co-text);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Layout ---------- */
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* ---------- Cards ---------- */
+
+.checkout-card {
+  padding: 24px;
+  background: var(--co-surface);
+  border: 1px solid var(--co-border);
+  border-radius: 11px;
+  min-width: 0;
+}
+
+.checkout-card h2 {
+  margin: 0 0 18px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* ---------- Form fields ---------- */
+
+.checkout-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 18px;
+}
+
+.checkout-fields .full-width {
+  grid-column: 1 / -1;
+}
+
+.checkout-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3c3c3c;
+}
+
+.checkout-card input,
+.checkout-card textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid var(--co-border-strong);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--co-text);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.checkout-card input::placeholder,
+.checkout-card textarea::placeholder {
+  color: #a0a0a0;
+}
+
+.checkout-card input:hover,
+.checkout-card textarea:hover {
+  border-color: #b5b5b5;
+}
+
+.checkout-card input:focus,
+.checkout-card textarea:focus {
+  outline: none;
+  border-color: var(--co-brand);
+  box-shadow: 0 0 0 3px rgba(244, 91, 11, 0.18);
+}
+
+.checkout-card textarea {
+  resize: vertical;
+  min-height: 84px;
+  line-height: 1.5;
+}
+
+/* ---------- Payment card ---------- */
+
+.razorpay-option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  background: var(--co-brand-soft);
+  border: 1.5px solid var(--co-brand);
+  border-radius: 9px;
+}
+
+.razorpay-option strong {
+  font-size: 15px;
+}
+
+.razorpay-option span {
+  color: var(--co-muted);
+  font-size: 13px;
+}
+
+.checkout-button {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid var(--co-dark);
+  border-radius: 9px;
+  background: var(--co-dark);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.checkout-button:hover:not(:disabled) {
+  background: var(--co-brand);
+  border-color: var(--co-brand);
+}
+
+.checkout-button:focus-visible,
+.back-button:focus-visible {
+  outline: 3px solid rgba(244, 91, 11, 0.45);
+  outline-offset: 2px;
+}
+
+.checkout-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secure-text {
+  margin: 12px 0 0;
+  text-align: center;
+  color: var(--co-muted);
+  font-size: 12px;
+}
+
+/* ---------- Order summary ---------- */
+
+.order-summary {
+  position: sticky;
+  top: 20px;
+}
+
+.restaurant-name {
+  margin: -8px 0 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--co-border);
+  color: var(--co-muted);
+  font-size: 14px;
+}
+
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.summary-item > div {
+  min-width: 0;
+}
+
+.summary-item strong {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.summary-item > strong {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-item p {
+  margin: 3px 0 0;
+  color: var(--co-muted);
+  font-size: 13px;
+}
+
+.summary-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--co-border);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-note {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  background: #faf9f7;
+  border-radius: 8px;
+  color: var(--co-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.final-total {
+  font-size: 17px;
+}
+
+.final-total strong:last-child {
+  font-size: 20px;
+}
+
+/* ---------- Error banner ---------- */
+
+.checkout-error {
+  margin-bottom: 18px;
+  padding: 13px 16px;
+  background: var(--co-danger-bg);
+  border: 1px solid #f5c6c2;
+  border-left: 4px solid var(--co-danger);
+  border-radius: 8px;
+  color: var(--co-danger);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- Loading / empty state ---------- */
+
+.checkout-message {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 96px 24px;
+  text-align: center;
+  color: var(--co-muted);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.checkout-message h2 {
+  margin: 0 0 20px;
+  color: var(--co-text);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.checkout-message .checkout-button {
+  max-width: 260px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Summary first on small screens so people see what they're paying for */
+  .order-summary {
+    position: static;
+    order: -1;
+  }
+
+  .summary-items {
+    max-height: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .checkout-page {
+    padding: 20px 14px 40px;
+  }
+
+  .checkout-heading h1 {
+    font-size: 24px;
+  }
+
+  .checkout-card {
+    padding: 18px 16px;
+  }
+
+  .checkout-fields {
+    grid-template-columns: 1fr;
+  }
+
+  /* 16px stops iOS Safari from zooming in on focus */
+  .checkout-card input,
+  .checkout-card textarea {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-card input,
+  .checkout-card textarea,
+  .checkout-button {
+    transition: none;
+  }
+}

@@ -8,6 +8,7 @@ import menuRoute from "./routes/menuItemsRoute.js";
 import searchBox from "./routes/searchRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
+import payemntRoute from "./routes/paymentRoute.js";
 import cors from "cors";
 const app = express();
 dotenv.config();
@@ -38,6 +39,7 @@ app.use("/api", menuRoute);
 app.use("/searchbox", searchBox);
 app.use("/apiV1", cartRoute);
 app.use("/apiV2", orderRoute);
+app.use("/apiV3", payemntRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`app is listening on port ${process.env.PORT} `);

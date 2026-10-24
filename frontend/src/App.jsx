@@ -13,6 +13,8 @@ import RestaurantDetails from "./pages/resturants/RestaurantDetails";
 import SearchMenu from "./pages/Search/SearchMenu";
 import Search from "./pages/Search/Search";
 import Cart from "./pages/cart/Cart";
+import Order from "./pages/order/Order";
+import Checkout from "./pages/Checkout/Checkout";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
       />
       <Route path="/search" element={<Search />}></Route>
       <Route path="/cart" element={<Cart />}></Route>
+      <Route path="order" element={<Order />}></Route>
+      <Route path="checkout" element={<Checkout />}></Route>
     </Routes>
   );
 }

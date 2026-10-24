@@ -115,7 +115,6 @@ export default function CartDetail() {
         },
       );
 
-      
       const updatedCart = response.data.cart;
 
       if (updatedCart && Array.isArray(updatedCart.items)) {
@@ -124,7 +123,6 @@ export default function CartDetail() {
           ...updatedCart,
         }));
       } else {
-       
         setCartInfo((previous) => ({
           ...previous,
           items: previous.items.map((item) =>
@@ -348,7 +346,7 @@ export default function CartDetail() {
           <div className="cart-summary-actions">
             <button
               className="cart-primary-btn"
-              onClick={() => (window.location.href = "/order")}
+              onClick={() => (window.location.href = "/checkout")}
             >
               Continue to checkout
             </button>

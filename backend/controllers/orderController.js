@@ -77,7 +77,7 @@ const addOrder = asyncWrapper(async (req, res) => {
 });
 
 const showMyOrders = asyncWrapper(async (req, res) => {
-  const customerId = req.user._id;
+  const customerId = req.user.id;
   const orders = await Order.find({ customer: customerId })
     .populate("restaurant")
     .populate("items.menuItem")

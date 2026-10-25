@@ -9,9 +9,11 @@ const razorpay = new Razorpay({
   key_id: process.env.GATEWAY_API_KEY,
   key_secret: process.env.GATEWAY_API_SECRET,
 });
+3;
 
 const CreateOrder = async (req, res) => {
   try {
+    console.log("reached to createOrder");
     const customerId = req.user.id;
     const { deliveryAddress, instructions = "" } = req.body;
 
@@ -91,7 +93,12 @@ const CreateOrder = async (req, res) => {
       key: process.env.GATEWAY_API_KEY,
     });
   } catch (err) {
-    console.log(err.message);
+    console.error("CreateOrder failed:", err);
+
+    return res.status(500).json({
+      success: false,
+      message: err.message || "Failed to create payment order",
+    });
   }
 };
 
@@ -162,6 +169,9 @@ const VerifyOrder = async (req, res) => {
     order.paymentStatus = "PAID";
     order.paymentReference = razorpay_payment_id;
     await order.save();
+    await Cart.findOneAndDelete({
+      customer: req.user.id,
+    });
 
     return res.status(200).json({
       success: true,

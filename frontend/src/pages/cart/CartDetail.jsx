@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import "./CartDetail.css";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -11,6 +13,7 @@ export default function CartDetail() {
     items: [],
     restaurant: null,
   });
+  const router = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -167,10 +170,7 @@ export default function CartDetail() {
       <div className="cart-page cart-message">
         <h2>My Cart</h2>
         <p className="cart-error">{error}</p>
-        <button
-          className="cart-secondary-btn"
-          onClick={() => (window.location.href = "/")}
-        >
+        <button className="cart-secondary-btn" onClick={() => router("/menu")}>
           Continue Shopping
         </button>
       </div>

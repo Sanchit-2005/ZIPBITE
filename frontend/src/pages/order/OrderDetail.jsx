@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./OrderDetail.css";
@@ -25,9 +24,7 @@ export default function OrderDetail() {
 
         setOrders(response.data.orders || []);
       } catch (err) {
-        setError(
-          err.response?.data?.message || "Failed to load orders"
-        );
+        setError(err.response?.data?.message || "Failed to load orders");
       } finally {
         setLoading(false);
       }
@@ -59,13 +56,10 @@ export default function OrderDetail() {
         !["DELIVERED", "CANCELLED"].includes(status)) ||
       status === activeTab;
 
-    const matchesSearch = [
-      order._id,
-      order.restaurant?.name,
-    ]
+    const matchesSearch = [order._id, order.restaurant?.name]
       .filter(Boolean)
       .some((value) =>
-        String(value).toLowerCase().includes(search.toLowerCase())
+        String(value).toLowerCase().includes(search.toLowerCase()),
       );
 
     return matchesTab && matchesSearch;
@@ -142,14 +136,12 @@ export default function OrderDetail() {
           <div>
             <h1>My Orders</h1>
             <p>
-              Track your orders, view past orders and reorder
-              your favourite meals.
+              Track your orders, view past orders and reorder your favourite
+              meals.
             </p>
           </div>
 
-          <div className="orders-count">
-            {orders.length} Orders
-          </div>
+          <div className="orders-count">{orders.length} Orders</div>
         </header>
 
         <div className="orders-toolbar">
@@ -217,9 +209,7 @@ export default function OrderDetail() {
 
               return (
                 <article
-                  className={`order-card ${
-                    isOngoing ? "ongoing-card" : ""
-                  }`}
+                  className={`order-card ${isOngoing ? "ongoing-card" : ""}`}
                   key={order._id}
                 >
                   <div className="order-card-top">
@@ -234,9 +224,7 @@ export default function OrderDetail() {
                     />
 
                     <div className="restaurant-info">
-                      <h3>
-                        {order.restaurant?.name || "Restaurant"}
-                      </h3>
+                      <h3>{order.restaurant?.name || "Restaurant"}</h3>
                       <p className="restaurant-category">
                         Order #{String(order._id).slice(-8).toUpperCase()}
                       </p>
@@ -251,8 +239,8 @@ export default function OrderDetail() {
                           isDelivered
                             ? "status-delivered"
                             : isCancelled
-                            ? "status-cancelled"
-                            : "status-ongoing"
+                              ? "status-cancelled"
+                              : "status-ongoing"
                         }`}
                       >
                         <span className="status-icon">
@@ -264,8 +252,10 @@ export default function OrderDetail() {
                       <span className="payment-status">
                         Payment:{" "}
                         <strong>
-                          {String(order.paymentStatus || "PENDING")
-                            .replaceAll("_", " ")}
+                          {String(order.paymentStatus || "PENDING").replaceAll(
+                            "_",
+                            " ",
+                          )}
                         </strong>
                       </span>
                     </div>
@@ -274,8 +264,19 @@ export default function OrderDetail() {
                   {isOngoing && (
                     <div className="order-tracking">
                       {[
-                        { label: "Placed", statuses: ["PLACED", "CONFIRMED", "PREPARING", "OUT_FOR_DELIVERY"] },
-                        { label: "Preparing", statuses: ["PREPARING", "OUT_FOR_DELIVERY"] },
+                        {
+                          label: "Placed",
+                          statuses: [
+                            "PLACED",
+                            "CONFIRMED",
+                            "PREPARING",
+                            "OUT_FOR_DELIVERY",
+                          ],
+                        },
+                        {
+                          label: "Preparing",
+                          statuses: ["PREPARING", "OUT_FOR_DELIVERY"],
+                        },
                         { label: "On the way", statuses: ["OUT_FOR_DELIVERY"] },
                         { label: "Delivered", statuses: [] },
                       ].map((step, index) => {
@@ -289,7 +290,12 @@ export default function OrderDetail() {
                         const complete =
                           index < currentIndex ||
                           (index === 0 &&
-                            ["PLACED", "CONFIRMED", "PREPARING", "OUT_FOR_DELIVERY"].includes(status));
+                            [
+                              "PLACED",
+                              "CONFIRMED",
+                              "PREPARING",
+                              "OUT_FOR_DELIVERY",
+                            ].includes(status));
 
                         const current = index === currentIndex;
 
@@ -331,9 +337,7 @@ export default function OrderDetail() {
                             <span>
                               {item.name || item.menuItem?.name || "Menu item"}
                             </span>
-                            <small>
-                              x{item.quantity || 1}
-                            </small>
+                            <small>x{item.quantity || 1}</small>
                           </div>
                         </div>
                       ))}
@@ -349,7 +353,7 @@ export default function OrderDetail() {
                         className="order-btn details-btn"
                         onClick={() => {
                           window.alert(
-                            `Order ID: ${order._id}\nStatus: ${getStatusLabel(status)}\nPayment: ${order.paymentStatus || "PENDING"}\nTotal: ${formatAmount(order.totalAmount)}`
+                            `Order ID: ${order._id}\nStatus: ${getStatusLabel(status)}\nPayment: ${order.paymentStatus || "PENDING"}\nTotal: ${formatAmount(order.totalAmount)}`,
                           );
                         }}
                       >
@@ -361,7 +365,7 @@ export default function OrderDetail() {
                           className="order-btn reorder-btn"
                           onClick={() =>
                             window.alert(
-                              "Connect this button to your add-to-cart API to reorder."
+                              "Connect this button to your add-to-cart API to reorder.",
                             )
                           }
                         >

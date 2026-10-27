@@ -15,6 +15,7 @@ import Search from "./pages/Search/Search";
 import Cart from "./pages/cart/Cart";
 import Order from "./pages/order/Order";
 import Checkout from "./pages/Checkout/Checkout";
+import RestaurantOwner from "./pages/resturantOwner/RestaurantOwner";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
       <Route path="/cart" element={<Cart />}></Route>
       <Route path="orders" element={<Order />}></Route>
       <Route path="checkout" element={<Checkout />}></Route>
+      <Route path="restaurant-owner" element={<RestaurantOwner />}></Route>
     </Routes>
   );
 }

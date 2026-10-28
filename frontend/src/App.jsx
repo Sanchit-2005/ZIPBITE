@@ -16,7 +16,7 @@ import Cart from "./pages/cart/Cart";
 import Order from "./pages/order/Order";
 import Checkout from "./pages/Checkout/Checkout";
 import RestaurantOwner from "./pages/resturantOwner/RestaurantOwner";
-
+import { RestaurantOwnerProvider } from "./context/RestaurantOwnerContext";
 function App() {
   return (
     <Routes>
@@ -33,7 +33,15 @@ function App() {
       <Route path="/cart" element={<Cart />}></Route>
       <Route path="orders" element={<Order />}></Route>
       <Route path="checkout" element={<Checkout />}></Route>
-      <Route path="restaurant-owner" element={<RestaurantOwner />}></Route>
+
+      <Route
+        path="/restaurant-owner/*"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOwner />
+          </RestaurantOwnerProvider>
+        }
+      />
     </Routes>
   );
 }

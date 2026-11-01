@@ -186,4 +186,50 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-export { getRestaurantOrders, acceptOrder, rejectOrder, updateOrderStatus };
+const monthlyRevenue = async (req, res) => {
+  console.log("Fetching monthly revenue for restaurant owner:");
+  try {
+    const restaurant = await Restaurant.findOne({
+      owner: req.user._id,
+    });
+
+    if (!restaurant) {
+      return res.status(404).json({
+        success: false,
+        message: "Restaurant not found",
+      });
+    }
+
+    const orders = await Order.find({
+      restaurant: restaurant._id,
+      paymentStatus: "PAID",
+    }).sort({ createdAt: -1 });
+
+    const monthlySales = Array(12).fill(0);
+
+    for (const order of orders) {
+      if (!order.createdAt) continue;
+      const month = new Date(order.createdAt).getMonth();
+      monthlySales[month] += Number(order.totalAmount) || 0;
+    }
+
+    return res.status(200).json({
+      success: true,
+      monthlySales,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export {
+  getRestaurantOrders,
+  acceptOrder,
+  rejectOrder,
+  updateOrderStatus,
+  monthlyRevenue,
+};

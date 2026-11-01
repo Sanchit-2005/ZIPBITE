@@ -6,11 +6,16 @@ import {
   acceptOrder,
   rejectOrder,
   updateOrderStatus,
+  monthlyRevenue,
 } from "../controllers/restaurantOwnerController.js";
 
 router
   .route("/restaurant-owner/orders")
   .get(authenticateUser, getRestaurantOrders);
+
+router
+  .route("/restaurant-owner/orders/monthly-revenue")
+  .get(authenticateUser, monthlyRevenue);
 
 router
   .route("/restaurant-owner/orders/:orderId/reject")

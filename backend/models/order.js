@@ -178,6 +178,10 @@ const orderSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    orderedAt: {
+      type: Date,
+      default: new Date(),
+    },
   },
   { timestamps: true },
 );

@@ -23,6 +23,7 @@ const addOrder = asyncWrapper(async (req, res) => {
     paymentMethod,
     paymentStatus,
     orderStatus,
+
     tax,
   } = req.body;
 
@@ -64,6 +65,7 @@ const addOrder = asyncWrapper(async (req, res) => {
     paymentMethod,
     paymentStatus: "PENDING",
     orderStatus: "PLACED",
+    orderedAt: Date.now(),
   });
   // 5. Clear the cart after order creation
   cart.items = [];

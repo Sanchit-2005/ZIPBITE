@@ -1,0 +1,108 @@
+.sales-card {
+  width: 420px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.sales-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.sales-card__header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}
+
+.sales-card__more {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 999px;
+  background: #f0f0f3;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sales-card__more:hover {
+  background: #e4e4e9;
+}
+
+.sales-card__body {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.sales-card__chart {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+.sales-card__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90px;
+  height: 90px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff1ec;
+}
+
+.sales-card__legend {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sales-card__legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.sales-card__legend .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sales-card__legend .name {
+  flex: 1;
+  color: #444;
+}
+
+.sales-card__legend .value {
+  font-weight: 700;
+  color: #111;
+}
+
+.sales-card__empty {
+  color: #888;
+  font-size: 14px;
+}

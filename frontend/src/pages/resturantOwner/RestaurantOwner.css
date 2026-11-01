@@ -1,3 +1,17 @@
+.owner-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+.owner-content {
+  flex: 1;
+  min-width: 0;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
 .owner-dashboard {
   min-height: 100vh;
   padding: 32px;
@@ -16,6 +30,7 @@
 .dashboard-header h1 {
   margin: 0 0 8px;
   font-size: 28px;
+  color: #1e293b;
 }
 
 .dashboard-header p {

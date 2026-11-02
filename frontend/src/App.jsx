@@ -17,6 +17,8 @@ import Order from "./pages/order/Order";
 import Checkout from "./pages/Checkout/Checkout";
 import RestaurantOwner from "./pages/resturantOwner/RestaurantOwner";
 import { RestaurantOwnerProvider } from "./context/RestaurantOwnerContext";
+import RestaurantOrders from "./pages/resturantOwner/RestaurantOrders";
+import RestaurantOrderDetail from "./pages/resturantOwner/components/RestaurantOrderDetail";
 function App() {
   return (
     <Routes>
@@ -39,6 +41,22 @@ function App() {
         element={
           <RestaurantOwnerProvider>
             <RestaurantOwner />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-owner/orders"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOrders />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-orders/orders/:orderId"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOrderDetail />
           </RestaurantOwnerProvider>
         }
       />

@@ -10,7 +10,6 @@ export default function RestaurantOwner() {
       <div className="owner-content">
         <RestaurantDashboard />
       </div>
-      
     </div>
   );
 }

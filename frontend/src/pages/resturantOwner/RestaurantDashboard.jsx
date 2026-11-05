@@ -32,6 +32,7 @@ export default function RestaurantDashboard() {
     const fetchMonthlySales = async () => {
       try {
         const token = localStorage.getItem("token");
+        console.log("reace here ----");
 
         const response = await axios.get(
           "http://localhost:8000/apiV4/restaurant-owner/orders/monthly-revenue",

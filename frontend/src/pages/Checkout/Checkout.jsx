@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/apiV1";
+const API_URL = "http://localhost:8000/apiV1";
 
 const initialAddress = {
   fullName: "",
@@ -25,7 +25,6 @@ export default function Checkout() {
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState("");
 
-  
   const token = localStorage.getItem("token");
 
   const api = useMemo(
@@ -45,7 +44,6 @@ export default function Checkout() {
         setLoading(true);
         setError("");
 
-       
         const response = await api.get("/cart");
 
         if (active) {

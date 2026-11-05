@@ -22,7 +22,7 @@ router
   .patch(authenticateUser, rejectOrder);
 
 router
-  .route("/restaurant-owner/orders/:orderId/reject")
+  .route("/restaurant-owner/orders/:orderId/accept")
   .patch(authenticateUser, acceptOrder);
 
 router

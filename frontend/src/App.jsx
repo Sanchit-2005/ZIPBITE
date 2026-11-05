@@ -36,14 +36,7 @@ function App() {
       <Route path="orders" element={<Order />}></Route>
       <Route path="checkout" element={<Checkout />}></Route>
 
-      <Route
-        path="/restaurant-owner/*"
-        element={
-          <RestaurantOwnerProvider>
-            <RestaurantOwner />
-          </RestaurantOwnerProvider>
-        }
-      />
+      {/* Specific routes MUST come before the wildcard */}
       <Route
         path="/restaurant-owner/orders"
         element={
@@ -57,6 +50,14 @@ function App() {
         element={
           <RestaurantOwnerProvider>
             <RestaurantOrderDetail />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-owner/*"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOwner />
           </RestaurantOwnerProvider>
         }
       />

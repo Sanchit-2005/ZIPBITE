@@ -221,7 +221,7 @@ const monthlyRevenue = async (req, res) => {
     console.error(err);
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: " Some Internal server error",
     });
   }
 };

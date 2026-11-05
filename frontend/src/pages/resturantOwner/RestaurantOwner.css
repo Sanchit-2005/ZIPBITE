@@ -701,3 +701,18 @@
     transition: none !important;
   }
 }
+
+
+/* ── Owner layout: sidebar + content side-by-side ── */
+
+.owner-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.owner-content {
+  flex: 1;
+  min-width: 0;          /* prevent flex overflow */
+  overflow-y: auto;
+  background: #f3f4fa;
+}

@@ -1,6 +1,7 @@
 import Restaurant from "../models/restaurant.js";
 import Order from "../models/order.js";
 import { StatusCodes } from "http-status-codes";
+import asyncWrapper from "../asyncWrap.js";
 
 const getRestaurantOrders = async (req, res) => {
   try {
@@ -117,7 +118,8 @@ const rejectOrder = async (req, res) => {
       });
     }
 
-    order.orderStatus = "REJECTED";
+    order.orderStatus = "CANCELLED";
+    order.cancelledAt = new Date();
     await order.save();
 
     return res.status(StatusCodes.OK).json({
@@ -226,10 +228,28 @@ const monthlyRevenue = async (req, res) => {
   }
 };
 
+const restaurntOwnerInfo = asyncWrapper(async (req, res) => {
+  const restaurant = await Restaurant.findOne({
+    owner: req.user._id,
+  }).populate("owner", "name email phone");
+
+  if (!restaurant) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "Restaurant not found" });
+  }
+
+  return res.status(StatusCodes.OK).json({
+    message: "Restaurant details fetched successfully",
+    restaurant,
+  });
+});
+
 export {
   getRestaurantOrders,
   acceptOrder,
   rejectOrder,
   updateOrderStatus,
   monthlyRevenue,
+  restaurntOwnerInfo,
 };

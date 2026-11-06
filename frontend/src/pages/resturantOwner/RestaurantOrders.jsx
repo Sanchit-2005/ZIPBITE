@@ -2,6 +2,7 @@ import { useRestaurantOwner } from "../../context/RestaurantOwnerContext";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RestaurantOrders.css";
+import axios from "axios";
 
 export default function RestaurantOrders() {
   const { orders, fetchOrders } = useRestaurantOwner();
@@ -25,20 +26,20 @@ export default function RestaurantOrders() {
 
   const newOrders = useMemo(
     () => orders.filter((order) => order.orderStatus === "PLACED"),
-    [orders]
+    [orders],
   );
 
   const preparingOrders = useMemo(
     () => orders.filter((order) => order.orderStatus === "PREPARING"),
-    [orders]
+    [orders],
   );
 
   const filteredOrders = useMemo(
     () =>
       orders.filter(
-        (order) => filter === "ALL" || order.orderStatus === filter
+        (order) => filter === "ALL" || order.orderStatus === filter,
       ),
-    [orders, filter]
+    [orders, filter],
   );
 
   const getStatusClass = (status) => {
@@ -86,8 +87,7 @@ export default function RestaurantOrders() {
     },
     {
       title: "Completed",
-      value: orders.filter((order) => order.orderStatus === "COMPLETED")
-        .length,
+      value: orders.filter((order) => order.orderStatus === "COMPLETED").length,
       icon: "bi-check2-circle",
       color: "green",
       description: "Successfully delivered",

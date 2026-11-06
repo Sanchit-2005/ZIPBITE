@@ -1,3 +1,4 @@
+﻿import "./env.js";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -10,10 +11,9 @@ import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import payemntRoute from "./routes/paymentRoute.js";
 import ownerRoute from "./routes/restaurantOwner.js";
+import uploadRoute from "./routes/uploadRoute.js";
 import cors from "cors";
 const app = express();
-dotenv.config();
-
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {
@@ -42,6 +42,7 @@ app.use("/apiV1", cartRoute);
 app.use("/apiV2", orderRoute);
 app.use("/apiV3", payemntRoute);
 app.use("/apiV4", ownerRoute);
+app.use("/upload", uploadRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`app is listening on port ${process.env.PORT} `);

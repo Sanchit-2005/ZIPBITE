@@ -23,16 +23,43 @@ export default function RestaurantDashboard() {
   const [monthlySales, setMonthlySales] = useState([]);
   const [toatalCustomers, setTotalCustomers] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const [ownerDetail, setOwnerDetail] = useState(null);
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
   useEffect(() => {
+    const fetchOwnerInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+          "http://localhost:8000/apiV4/restaurant-owner/ownerInfo",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        console.log("Owner info:", response.data);
+        setOwnerDetail(response.data.restaurant);
+      } catch (error) {
+        console.error(
+          "Error fetching restaurant owner info:",
+          error.response?.data || error.message,
+        );
+      }
+    };
+
+    fetchOwnerInfo();
+  }, []);
+
+  useEffect(() => {
     const fetchMonthlySales = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log("reace here ----");
 
         const response = await axios.get(
           "http://localhost:8000/apiV4/restaurant-owner/orders/monthly-revenue",
@@ -114,7 +141,13 @@ export default function RestaurantDashboard() {
     <div className="owner-dashboard">
       {/* Header */}
       <div className="dashboard-header">
-        <h1>Restaurant Dashboard</h1>
+        <div>
+          <h1>Restaurant Dashboard</h1>
+          <h2>{ownerDetail?.name || "Loading restaurant..."}</h2>
+          <h3>{ownerDetail?.owner?.name || ""}</h3>
+          <p>{ownerDetail?.owner?.email || ""}</p>
+        </div>
+
         <button
           className="btn-primary"
           onClick={handleRefresh}

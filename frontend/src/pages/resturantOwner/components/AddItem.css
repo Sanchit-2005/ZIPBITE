@@ -1,0 +1,565 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+/* ==========================================================================
+   Restaurant owner — add menu item
+   Scoped to .ami-page so no other page is affected.
+   Tokens mirror RestaurantOrders.css / RestaurantOrderDetail.css.
+   ========================================================================== */
+
+.ami-page {
+  --ami-ink: #15182e;
+  --ami-text: #1d2036;
+  --ami-soft-text: #5d6179;
+  --ami-muted: #7b7f95;
+  --ami-line: #e8eaf3;
+  --ami-line-soft: #eef0f7;
+  --ami-bg: #f3f4fa;
+  --ami-card: #ffffff;
+  --ami-accent: #ff7a2f;
+  --ami-accent-soft: #fff0e6;
+  --ami-danger: #d03f3f;
+  --ami-success: #139660;
+
+  min-height: 100vh;
+  background: var(--ami-bg);
+  color: var(--ami-text);
+  font-family: "Manrope", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ami-page *,
+.ami-page *::before,
+.ami-page *::after {
+  box-sizing: border-box;
+}
+
+.ami-shell {
+  max-width: 1184px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+}
+
+/* ---------- Header ---------- */
+
+.ami-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #6a6e77;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: color 0.18s ease;
+}
+
+.ami-back:hover {
+  color: #e8651e;
+}
+
+.ami-head {
+  margin-bottom: 18px;
+}
+
+.ami-title {
+  margin: 0;
+  font-family: "Sora", "Manrope", sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.9px;
+  line-height: 1.15;
+}
+
+/* ---------- Restaurant context ---------- */
+
+.ami-context {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--ami-line);
+  border-radius: 14px;
+  background: #f8f9fd;
+}
+
+.ami-context-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--ami-accent-soft);
+  color: var(--ami-accent);
+}
+
+.ami-context-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ami-context-label {
+  color: #8b8fa4;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+}
+
+.ami-context-value {
+  color: var(--ami-text);
+  font-size: 14.5px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Workspace ---------- */
+
+.ami-card {
+  padding: 24px;
+  border: 1px solid var(--ami-line);
+  border-radius: 22px;
+  background: var(--ami-card);
+}
+
+.ami-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 372px;
+  gap: 24px;
+  align-items: start;
+}
+
+.ami-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.ami-row3 {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr 1.2fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.ami-row3 > * {
+  min-width: 0;
+}
+
+/* ---------- MUI field styling ---------- */
+
+.ami-page .ami-field {
+  margin: 0;
+}
+
+.ami-page .MuiOutlinedInput-root {
+  border-radius: 12px;
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.ami-page .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #e2e5f0;
+}
+
+.ami-page .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #cfd3e2;
+}
+
+.ami-page .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--ami-accent);
+  border-width: 1px;
+}
+
+.ami-page
+  .MuiOutlinedInput-root.Mui-error
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #e5a3a3;
+}
+
+.ami-page
+  .MuiOutlinedInput-root.Mui-error.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: var(--ami-danger);
+}
+
+.ami-page .MuiInputLabel-root {
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #6a6e86;
+}
+
+.ami-page .MuiInputLabel-root.Mui-focused {
+  color: #e8651e;
+}
+
+.ami-page .MuiInputLabel-root.Mui-error {
+  color: var(--ami-danger);
+}
+
+.ami-page .MuiFormLabel-asterisk {
+  color: var(--ami-danger);
+}
+
+.ami-page .MuiFormHelperText-root {
+  margin-left: 2px;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.ami-page .MuiFormHelperText-root.Mui-error {
+  color: var(--ami-danger);
+}
+
+.ami-page .MuiSelect-select {
+  font-size: 14px;
+}
+
+/* ---------- Photo workbench ---------- */
+
+.ami-photo {
+  padding-left: 24px;
+  border-left: 1px solid var(--ami-line-soft);
+  min-width: 0;
+}
+
+.ami-photo-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ami-photo-head h2 {
+  margin: 0;
+  font-family: "Sora", "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.ami-photo-hint {
+  color: var(--ami-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.ami-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px dashed #d8dceb;
+  border-radius: 14px;
+  background:
+    radial-gradient(220px 140px at 50% 0%, #ffffff, transparent 70%),
+    linear-gradient(180deg, #fbfcff, #f5f7fc);
+}
+
+.ami-preview.has-image {
+  border-style: solid;
+  border-color: var(--ami-line);
+  background: #eef0f7;
+}
+
+.ami-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ami-preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #9aa0b8;
+  text-align: center;
+}
+
+.ami-preview-empty svg {
+  color: #b3b8cb;
+}
+
+.ami-preview-empty span {
+  color: #8b8fa4;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.ami-photo-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.ami-choose {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--ami-line);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #3a3e56;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease,
+    background 0.18s ease;
+}
+
+.ami-choose:hover {
+  border-color: #ffc9a9;
+  color: #e8651e;
+  background: #fffaf6;
+}
+
+.ami-choose:focus-within {
+  outline: 3px solid rgba(255, 122, 47, 0.35);
+  outline-offset: 2px;
+}
+
+.ami-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ami-filename {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--ami-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ami-page .ami-upload.MuiButton-root {
+  width: 100%;
+  height: 44px;
+  margin-top: 12px;
+  border: 1px solid #dfe3f0;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #3a3e56;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: none;
+  box-shadow: none;
+}
+
+.ami-page .ami-upload.MuiButton-root:hover {
+  border-color: #c9cddf;
+  background: #f8f9fd;
+}
+
+.ami-page .ami-upload.MuiButton-root:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.35);
+  outline-offset: 2px;
+}
+
+.ami-uploaded {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid #d9f0e4;
+  border-radius: 10px;
+  background: #f1fbf6;
+  color: var(--ami-success);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ami-uploaded a {
+  color: #0f7a53;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.ami-uploaded a:focus-visible {
+  outline: 2px solid rgba(19, 150, 96, 0.5);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ---------- Footer / submit ---------- */
+
+.ami-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ami-line-soft);
+}
+
+.ami-page .ami-submit.MuiButton-root {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  background: var(--ami-accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: none;
+  box-shadow: 0 10px 22px rgba(255, 122, 47, 0.28);
+}
+
+.ami-page .ami-submit.MuiButton-root:hover {
+  background: #f26a1c;
+  box-shadow: 0 12px 26px rgba(255, 122, 47, 0.36);
+}
+
+.ami-page .ami-submit.MuiButton-root:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.45);
+  outline-offset: 2px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1080px) {
+  .ami-columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .ami-photo {
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: 0;
+    border-top: 1px solid var(--ami-line-soft);
+  }
+
+  .ami-preview {
+    max-width: 420px;
+  }
+}
+
+/* Tablet: keep the photo beside its controls instead of a tall empty row */
+@media (max-width: 1080px) and (min-width: 641px) {
+  .ami-photo {
+    display: grid;
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: 20px;
+  }
+
+  .ami-photo-head {
+    grid-column: 1 / -1;
+  }
+
+  .ami-preview {
+    grid-column: 1;
+    grid-row: 2 / 5;
+    max-width: none;
+    align-self: start;
+  }
+
+  .ami-photo-controls {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0;
+  }
+
+  .ami-page .ami-upload.MuiButton-root {
+    grid-column: 2;
+    grid-row: 3;
+    margin-top: 12px;
+  }
+
+  .ami-uploaded {
+    grid-column: 2;
+    grid-row: 4;
+    align-self: start;
+  }
+}
+
+@media (max-width: 800px) {
+  .ami-row3 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ami-row3 > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .ami-shell {
+    padding: 20px 14px 32px;
+  }
+
+  .ami-title {
+    font-size: 23px;
+  }
+
+  .ami-card {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+
+  .ami-fields {
+    gap: 16px;
+  }
+
+  .ami-row3 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ami-preview {
+    max-width: none;
+  }
+
+  .ami-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .ami-page .ami-submit.MuiButton-root {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ami-page *,
+  .ami-page *::before,
+  .ami-page *::after {
+    transition: none !important;
+  }
+}

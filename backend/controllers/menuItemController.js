@@ -4,7 +4,7 @@ const addItem = async (req, res) => {
   try {
     const {
       restaurant,
-      name,
+      name, 
       description,
       price,
       category,

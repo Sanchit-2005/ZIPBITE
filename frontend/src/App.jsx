@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import heroImg from "./assets/hero.png";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
@@ -19,6 +19,8 @@ import RestaurantOwner from "./pages/resturantOwner/RestaurantOwner";
 import { RestaurantOwnerProvider } from "./context/RestaurantOwnerContext";
 import RestaurantOrders from "./pages/resturantOwner/RestaurantOrders";
 import RestaurantOrderDetail from "./pages/resturantOwner/components/RestaurantOrderDetail";
+import RestaurantOwnerMenu from "./pages/resturantOwner/components/RestaurantOwnerMenu";
+import AddItem from "./pages/resturantOwner/components/AddItem";
 function App() {
   return (
     <Routes>
@@ -54,10 +56,26 @@ function App() {
         }
       />
       <Route
-        path="/restaurant-owner/*"
+        path="/restaurant-owner/"
         element={
           <RestaurantOwnerProvider>
             <RestaurantOwner />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-owner/menu"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOwnerMenu />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-owner/menu/addNewItem"
+        element={
+          <RestaurantOwnerProvider>
+            <AddItem />
           </RestaurantOwnerProvider>
         }
       />

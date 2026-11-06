@@ -11,6 +11,8 @@ const RestaurantOwnerContext = createContext();
 
 export function RestaurantOwnerProvider({ children }) {
   const [orders, setOrders] = useState([]);
+  const [ownerDetail, setOwnerDetail] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -22,7 +24,7 @@ export function RestaurantOwnerProvider({ children }) {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        throw new Error("Please log in to access restaurant orders.");
+        throw new Error("Please log in.");
       }
 
       const response = await axios.get(
@@ -40,9 +42,40 @@ export function RestaurantOwnerProvider({ children }) {
     }
   }, []);
 
+  const fetchOwnerInfo = useCallback(async () => {
+    try {
+      console.log("currently i am at fetchInfo");
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      const response = await axios.get(
+        "http://localhost:8000/apiV4/restaurant-owner/ownerInfo",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("owner info is :", response.data.restaurant);
+
+      setOwnerDetail(response.data.restaurant);
+    } catch (error) {
+      console.error("Error fetching owner info:", error);
+    }
+  }, []);
+
   const value = useMemo(
-    () => ({ orders, loading, error, fetchOrders, setOrders }),
-    [orders, loading, error, fetchOrders],
+    () => ({
+      orders,
+      ownerDetail,
+      loading,
+      error,
+      fetchOrders,
+      fetchOwnerInfo,
+      setOrders,
+    }),
+    [orders, ownerDetail, loading, error, fetchOrders, fetchOwnerInfo],
   );
 
   return (

@@ -1,0 +1,606 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+/* ==========================================================================
+   Restaurant owner — edit menu item
+   Scoped to .edi-page so no other page is affected.
+   Tokens mirror RestaurantOrders.css / RestaurantOrderDetail.css.
+   ========================================================================== */
+
+.edi-page {
+  --edi-ink: #15182e;
+  --edi-text: #1d2036;
+  --edi-soft-text: #5d6179;
+  --edi-muted: #7b7f95;
+  --edi-line: #e8eaf3;
+  --edi-line-soft: #eef0f7;
+  --edi-bg: #f3f4fa;
+  --edi-card: #ffffff;
+  --edi-accent: #ff7a2f;
+  --edi-accent-soft: #fff0e6;
+  --edi-danger: #d03f3f;
+
+  min-height: 100vh;
+  background: var(--edi-bg);
+  color: var(--edi-text);
+  font-family: "Manrope", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.edi-page *,
+.edi-page *::before,
+.edi-page *::after {
+  box-sizing: border-box;
+}
+
+.edi-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+}
+
+/* ---------- Header ---------- */
+
+.edi-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #6a6e86;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: color 0.18s ease;
+}
+
+.edi-back:hover {
+  color: #e8651e;
+}
+
+.edi-head {
+  margin-bottom: 18px;
+}
+
+.edi-title {
+  margin: 0;
+  font-family: "Sora", "Manrope", sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.9px;
+  line-height: 1.15;
+}
+
+.edi-context {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 8px 0 0;
+  color: #6a6e86;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.edi-context svg {
+  color: #8b8fa4;
+}
+
+.edi-context-sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #b9bdcf;
+}
+
+/* ---------- Card ---------- */
+
+.edi-card {
+  overflow: hidden;
+  border: 1px solid var(--edi-line);
+  border-radius: 22px;
+  background: var(--edi-card);
+}
+
+/* ---------- Photo cover ---------- */
+
+.edi-cover {
+  position: relative;
+  height: 232px;
+  background:
+    radial-gradient(420px 200px at 82% -20%, #ffe6d5, transparent 70%),
+    linear-gradient(135deg, #f7f8fc, #eceefa);
+}
+
+.edi-cover-media {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #b3b8cb;
+}
+
+.edi-cover-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.edi-cover-top {
+  position: absolute;
+  inset: 14px 14px auto auto;
+  z-index: 2;
+}
+
+.edi-replace {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #2c3048;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(21, 24, 46, 0.16);
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.edi-replace:hover {
+  background: #ffffff;
+  color: #e8651e;
+}
+
+.edi-replace:focus-within {
+  outline: 3px solid rgba(255, 122, 47, 0.5);
+  outline-offset: 2px;
+}
+
+.edi-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.edi-cover-bottom {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 16px;
+  background: linear-gradient(
+    to top,
+    rgba(21, 24, 46, 0.62),
+    rgba(21, 24, 46, 0)
+  );
+}
+
+.edi-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: min(320px, 100%);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #3a3e56;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.edi-file-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.edi-pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--edi-accent);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- Fields ---------- */
+
+.edi-body {
+  padding: 24px;
+}
+
+.edi-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px 14px;
+  align-items: start;
+}
+
+.edi-span-all {
+  grid-column: 1 / -1;
+}
+
+.edi-page .edi-field {
+  margin: 0;
+  min-width: 0;
+}
+
+.edi-page .MuiOutlinedInput-root {
+  border-radius: 12px;
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.edi-page .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #e2e5f0;
+}
+
+.edi-page .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #cfd3e2;
+}
+
+.edi-page .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--edi-accent);
+  border-width: 1px;
+}
+
+.edi-page .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: #e5a3a3;
+}
+
+.edi-page
+  .MuiOutlinedInput-root.Mui-error.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: var(--edi-danger);
+}
+
+.edi-page .MuiInputLabel-root {
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #6a6e86;
+}
+
+.edi-page .MuiInputLabel-root.Mui-focused {
+  color: #e8651e;
+}
+
+.edi-page .MuiInputLabel-root.Mui-error {
+  color: var(--edi-danger);
+}
+
+.edi-page .MuiFormLabel-asterisk {
+  color: var(--edi-danger);
+}
+
+.edi-page .MuiFormHelperText-root {
+  margin-left: 2px;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.edi-page .MuiFormHelperText-root.Mui-error {
+  color: var(--edi-danger);
+}
+
+.edi-page .MuiSelect-select {
+  font-size: 14px;
+}
+
+/* ---------- Footer / update ---------- */
+
+.edi-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--edi-line-soft);
+  background: #fcfcfe;
+}
+
+.edi-footer-note {
+  color: var(--edi-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.edi-page .edi-submit.MuiButton-root {
+  flex-shrink: 0;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 12px;
+  background: var(--edi-accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: none;
+  box-shadow: 0 10px 22px rgba(255, 122, 47, 0.28);
+}
+
+.edi-page .edi-submit.MuiButton-root:hover {
+  background: #f26a1c;
+  box-shadow: 0 12px 26px rgba(255, 122, 47, 0.36);
+}
+
+.edi-page .edi-submit.MuiButton-root.Mui-disabled {
+  background: #f5c4a5;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.edi-page .edi-submit.MuiButton-root:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.45);
+  outline-offset: 2px;
+}
+
+.edi-back:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.45);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Not found ---------- */
+
+.edi-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 32px;
+}
+
+.edi-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 6px;
+  border-radius: 13px;
+  background: var(--edi-accent-soft);
+  color: var(--edi-accent);
+}
+
+.edi-empty h1 {
+  margin: 0;
+  font-family: "Sora", "Manrope", sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+.edi-empty p {
+  margin: 0;
+  color: var(--edi-soft-text);
+  font-size: 13.5px;
+}
+
+.edi-page .edi-empty-action.MuiButton-root {
+  margin-top: 10px;
+  height: 42px;
+  padding: 0 18px;
+  border: 1px solid var(--edi-line);
+  border-radius: 11px;
+  background: #ffffff;
+  color: #3a3e56;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: none;
+}
+
+.edi-page .edi-empty-action.MuiButton-root:hover {
+  border-color: #ffc9a9;
+  background: #fffaf6;
+  color: #e8651e;
+}
+
+/* ---------- Loading skeleton ---------- */
+
+.edi-skeleton {
+  animation: edi-fade 0.3s ease both;
+}
+
+.edi-skel-back {
+  width: 108px;
+  height: 13px;
+  margin-bottom: 18px;
+  border-radius: 6px;
+}
+
+.edi-skel-title {
+  width: 240px;
+  height: 26px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.edi-skel-sub {
+  width: 180px;
+  height: 13px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+.edi-skel-cover {
+  height: 232px;
+  border-radius: 0;
+}
+
+.edi-skel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px 14px;
+  padding: 24px;
+}
+
+.edi-skel-field {
+  height: 56px;
+  border-radius: 12px;
+}
+
+.edi-skel-wide {
+  grid-column: 1 / -1;
+  height: 108px;
+}
+
+.edi-skel-footer {
+  height: 78px;
+  border-top: 1px solid var(--edi-line-soft);
+  background: #fcfcfe;
+}
+
+.edi-skel-back,
+.edi-skel-title,
+.edi-skel-sub,
+.edi-skel-cover,
+.edi-skel-field {
+  background: linear-gradient(90deg, #eef0f7 25%, #f7f8fc 37%, #eef0f7 63%);
+  background-size: 400% 100%;
+  animation: edi-shimmer 1.4s ease infinite;
+}
+
+.edi-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes edi-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@keyframes edi-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+  .edi-grid,
+  .edi-skel-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .edi-span-all {
+    grid-column: 1 / -1;
+  }
+
+  .edi-skel-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .edi-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .edi-span-all {
+    grid-column: auto;
+  }
+
+  .edi-skel-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .edi-skel-wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .edi-shell {
+    padding: 20px 14px 32px;
+  }
+
+  .edi-title {
+    font-size: 23px;
+  }
+
+  .edi-card {
+    border-radius: 18px;
+  }
+
+  .edi-cover {
+    height: 168px;
+  }
+
+  .edi-cover-top {
+    inset: 10px 10px auto auto;
+  }
+
+  .edi-body {
+    padding: 18px 14px;
+  }
+
+  .edi-grid {
+    gap: 16px;
+  }
+
+  .edi-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 16px 14px;
+  }
+
+  .edi-page .edi-submit.MuiButton-root {
+    width: 100%;
+  }
+
+  .edi-empty {
+    padding: 24px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edi-page *,
+  .edi-page *::before,
+  .edi-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

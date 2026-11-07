@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRestaurantOwner } from "../../../context/RestaurantOwnerContext";
 import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 import OwnerSidebar from "../mainBox/OwnerSidebar";
 import "../RestaurantOwner.css";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 export default function RestaurantOwnerMenu() {
   const navigate = useNavigate();
   const { ownerDetail, fetchOwnerInfo } = useRestaurantOwner();
@@ -49,6 +52,20 @@ export default function RestaurantOwnerMenu() {
   // Calculate available items
   const availableItems = menuItems.filter((item) => item.isAvailable === true);
 
+  const handleDelete = async (itemId) => {
+    const token = localStorage.getItem("token");
+    console.log("deleted button clicked");
+    axios.delete(`http://localhost:8000/api/menu-item/${itemId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setMenuItems((prevItems) =>
+      prevItems.filter((item) => item._id !== itemId),
+    );
+  };
+
   return (
     <div className="owner-layout">
       <OwnerSidebar />
@@ -74,7 +91,21 @@ export default function RestaurantOwnerMenu() {
           {menuItems.map((item) => (
             // <p key={item._id}>{item.name}</p>
             <div key={item._id}>
-              <b>{item.name}</b>
+              <hr />
+              <b>{item.name}</b> &nbsp; &nbsp; &nbsp;
+              {item.category}
+              &nbsp; &nbsp;
+              <EditIcon
+                onClick={() =>
+                  navigate(`/restaurant-owner/menu/editItem/${item._id}`)
+                }
+                style={{ cursor: "pointer" }}
+              />{" "}
+              &nbsp; &nbsp;
+              <DeleteIcon
+                onClick={() => handleDelete(item._id)}
+                style={{ cursor: "pointer" }}
+              />
             </div>
           ))}
         </div>

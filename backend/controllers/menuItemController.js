@@ -4,7 +4,7 @@ const addItem = async (req, res) => {
   try {
     const {
       restaurant,
-      name, 
+      name,
       description,
       price,
       category,
@@ -69,7 +69,7 @@ const getItems = async (req, res) => {
 const oneItem = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const item = await MenuItem.findById(itemId);
+    const item = await MenuItem.findById(itemId).populate("restaurant");
     if (!item) {
       return res
         .status(StatusCodes.NOT_FOUND)
@@ -110,20 +110,24 @@ const updateItem = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "no item found " });
     }
-    const { name, description, price, category, preparationTime } = req.body;
+    const { name, description, price, category, preparationTime, image } = req.body;
 
-    item.name = name || item.name;
-    item.description = description || item.description;
-    item.price = price || item.price;
-    item.category = category || item.category;
-    item.preparationTime = preparationTime || item.preparationTime;
-    item.save();
+    if (name !== undefined) item.name = name;
+    if (description !== undefined) item.description = description;
+    if (price !== undefined) item.price = price;
+    if (category !== undefined) item.category = category;
+    if (preparationTime !== undefined) item.preparationTime = preparationTime;
+    if (image !== undefined) item.image = image;
+
+    await item.save();
     res
       .status(StatusCodes.ACCEPTED)
-      .json({ message: "Item updated successfully " });
+      .json({ message: "Item updated successfully ", item });
   } catch (err) {
     console.log(err);
-    throw err;
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: err.message || "Failed to update item" });
   }
 };
 const getAllItems = async (req, res) => {

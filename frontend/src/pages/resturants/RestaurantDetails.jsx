@@ -48,9 +48,14 @@ export default function RestaurantDetails() {
         setLoading(true);
         setError("");
 
+        const token = localStorage.getItem("token");
+        const config = token
+          ? { headers: { Authorization: `Bearer ${token}` } }
+          : {};
+
         const [restaurantRes, menuRes] = await Promise.all([
-          axios.get(`http://localhost:8000/restaurants/${restaurantId}`),
-          axios.get(`http://localhost:8000/api/restaurants/${restaurantId}`),
+          axios.get(`http://localhost:8000/restaurants/${restaurantId}`, config),
+          axios.get(`http://localhost:8000/api/restaurants/${restaurantId}`, config),
         ]);
 
         setRestaurant(restaurantRes.data.restaurant ?? restaurantRes.data);

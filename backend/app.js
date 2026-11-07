@@ -1,7 +1,6 @@
-﻿import "./env.js";
+import "./env.js";
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import User from "./models/userModel.js";
 import userRouter from "./routes/userroute.js";
 import restaurantRoute from "./routes/restaurantRoute.js";
@@ -13,13 +12,14 @@ import payemntRoute from "./routes/paymentRoute.js";
 import ownerRoute from "./routes/restaurantOwner.js";
 import uploadRoute from "./routes/uploadRoute.js";
 import cors from "cors";
+
 const app = express();
+
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("database is connected");
   })
-
   .catch((e) => {
     console.log("database is not connected");
     throw e;

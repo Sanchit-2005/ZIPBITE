@@ -5,6 +5,7 @@ import {
   deleteItem,
   updateItem,
   getAllItems,
+  manageItemAvaibility,
 } from "../controllers/menuItemController.js";
 import { Router } from "express";
 import authenticateUser from "../middleware/auth.js";
@@ -15,5 +16,8 @@ router.route("/restaurants/:restaurantId").get(getItems);
 router.route("/menu-item/:itemId").get(oneItem);
 router.route("/menu-item/:itemId").delete(authenticateUser, deleteItem);
 router.route("/menu-item/:itemId").patch(authenticateUser, updateItem);
+router
+  .route("/menu-item/manageItemAvaibility/:itemId")
+  .patch(authenticateUser, manageItemAvaibility);
 
 export default router;

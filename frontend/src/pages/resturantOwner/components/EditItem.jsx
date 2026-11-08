@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import OwnerSidebar from "../mainBox/OwnerSidebar";
 import "../RestaurantOwner.css";
 import "./EditItem.css";
@@ -9,6 +9,8 @@ import {
   ArrowLeft,
   FileImage,
   ImagePlus,
+  Loader2,
+  RotateCcw,
   Store,
   UtensilsCrossed,
 } from "lucide-react";
@@ -47,6 +49,8 @@ export default function EditItem() {
     reset,
     formState: { errors },
   } = useForm();
+
+  const typedName = useWatch({ control, name: "name" });
 
   const [menuData, setMenuData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -91,9 +95,23 @@ export default function EditItem() {
 
     if (!file) return;
 
+    if (preview.startsWith("blob:")) {
+      URL.revokeObjectURL(preview);
+    }
+
     setImage(file);
 
     setPreview(URL.createObjectURL(file));
+    e.target.value = "";
+  };
+
+  const handleRevertPhoto = () => {
+    if (preview.startsWith("blob:")) {
+      URL.revokeObjectURL(preview);
+    }
+
+    setImage(null);
+    setPreview(menuData?.image || "");
   };
 
   const onSubmit = async (data) => {
@@ -239,16 +257,25 @@ export default function EditItem() {
             <p className="edi-context">
               <Store size={15} aria-hidden="true" />
               {menuData?.restaurant?.name || "Restaurant"}
+              {typedName?.trim() ? (
+                <>
+                  <span className="edi-context-sep" aria-hidden="true"></span>
+                  <span className="edi-context-item">{typedName.trim()}</span>
+                </>
+              ) : null}
             </p>
           </header>
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <section className="edi-card">
-              <div className="edi-cover">
+            <section className="edi-card" aria-busy={updating}>
+              <div
+                className={`edi-cover${preview ? "" : " edi-cover--empty"}`}
+              >
                 <div className="edi-cover-media">
                   <UtensilsCrossed size={34} aria-hidden="true" />
                   {preview ? (
                     <img
+                      key={preview}
                       src={preview}
                       alt={`${menuData.name || "Menu item"} photo`}
                       onError={hideBrokenImage}
@@ -262,10 +289,15 @@ export default function EditItem() {
                       className="edi-file-input"
                       type="file"
                       accept="image/*"
+                      disabled={updating}
                       onChange={handleFileChange}
                     />
                     <ImagePlus size={15} aria-hidden="true" />
-                    {image ? "Choose another photo" : "Replace photo"}
+                    {image
+                      ? "Choose another photo"
+                      : preview
+                        ? "Replace photo"
+                        : "Add photo"}
                   </label>
                 </div>
 
@@ -275,7 +307,16 @@ export default function EditItem() {
                       <FileImage size={13} aria-hidden="true" />
                       <span title={image.name}>{image.name}</span>
                     </span>
-                    <span className="edi-pending">Not saved yet</span>
+                    <span className="edi-pending">New photo</span>
+                    <button
+                      type="button"
+                      className="edi-revert"
+                      onClick={handleRevertPhoto}
+                      disabled={updating}
+                    >
+                      <RotateCcw size={13} aria-hidden="true" />
+                      Revert
+                    </button>
                   </div>
                 ) : null}
               </div>
@@ -381,7 +422,18 @@ export default function EditItem() {
                   disableElevation
                   disabled={updating}
                 >
-                  {updating ? "Updating..." : "Update menu item"}
+                  {updating ? (
+                    <>
+                      <Loader2
+                        className="edi-spinner"
+                        size={16}
+                        aria-hidden="true"
+                      />
+                      Updating…
+                    </>
+                  ) : (
+                    "Update menu item"
+                  )}
                 </Button>
               </div>
             </section>

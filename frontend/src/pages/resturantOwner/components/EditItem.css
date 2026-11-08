@@ -76,7 +76,8 @@
 .edi-context {
   display: flex;
   align-items: center;
-  gap: 7px;
+  flex-wrap: wrap;
+  gap: 4px 7px;
   margin: 8px 0 0;
   color: #6a6e86;
   font-size: 13px;
@@ -85,6 +86,12 @@
 
 .edi-context svg {
   color: #8b8fa4;
+}
+
+.edi-context-item {
+  color: #3a3e56;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .edi-context-sep {
@@ -111,6 +118,10 @@
   background:
     radial-gradient(420px 200px at 82% -20%, #ffe6d5, transparent 70%),
     linear-gradient(135deg, #f7f8fc, #eceefa);
+}
+
+.edi-cover--empty {
+  height: 176px;
 }
 
 .edi-cover-media {
@@ -164,6 +175,11 @@
 .edi-replace:focus-within {
   outline: 3px solid rgba(255, 122, 47, 0.5);
   outline-offset: 2px;
+}
+
+.edi-replace:has(.edi-file-input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .edi-file-input {
@@ -224,6 +240,38 @@
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.3px;
+}
+
+.edi-revert {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.94);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.edi-revert:hover {
+  color: #ffffff;
+}
+
+.edi-revert:disabled {
+  opacity: 0.55;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+.edi-revert:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* ---------- Fields ---------- */
@@ -332,6 +380,7 @@
 
 .edi-page .edi-submit.MuiButton-root {
   flex-shrink: 0;
+  gap: 8px;
   height: 46px;
   padding: 0 22px;
   border-radius: 12px;
@@ -342,6 +391,16 @@
   font-weight: 800;
   text-transform: none;
   box-shadow: 0 10px 22px rgba(255, 122, 47, 0.28);
+}
+
+.edi-spinner {
+  animation: edi-spin 0.9s linear infinite;
+}
+
+@keyframes edi-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .edi-page .edi-submit.MuiButton-root:hover {
@@ -481,7 +540,7 @@
 .edi-skel-sub,
 .edi-skel-cover,
 .edi-skel-field {
-  background: linear-gradient(90deg, #eef0f7 25%, #f7f8fc 37%, #eef0f7 63%);
+  background: linear-gradient(90deg, #e7eaf3 25%, #f6f7fc 37%, #e7eaf3 63%);
   background-size: 400% 100%;
   animation: edi-shimmer 1.4s ease infinite;
 }
@@ -522,6 +581,11 @@
   .edi-grid,
   .edi-skel-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .edi-grid > :first-child,
+  .edi-skel-grid > :first-child {
+    grid-column: 1 / -1;
   }
 
   .edi-span-all {
@@ -566,6 +630,10 @@
 
   .edi-cover {
     height: 168px;
+  }
+
+  .edi-cover--empty {
+    height: 136px;
   }
 
   .edi-cover-top {

@@ -110,7 +110,8 @@ const updateItem = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "no item found " });
     }
-    const { name, description, price, category, preparationTime, image } = req.body;
+    const { name, description, price, category, preparationTime, image } =
+      req.body;
 
     if (name !== undefined) item.name = name;
     if (description !== undefined) item.description = description;
@@ -143,4 +144,27 @@ const getAllItems = async (req, res) => {
   }
 };
 
-export { addItem, getItems, oneItem, deleteItem, updateItem, getAllItems };
+const manageItemAvaibility = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { isAvailable } = req.body;
+    const item = await MenuItem.findByIdAndUpdate(
+      itemId,
+      { isAvailable },
+      { new: true, runValidators: true },
+    );
+    if (!item) {
+      return res.status(404).json({
+        message: "Menu item not found",
+      });
+    }
+    res.status(200).json({
+      message: "Availability updated successfully",
+      item,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { addItem, getItems, oneItem, deleteItem, updateItem, getAllItems,manageItemAvaibility };

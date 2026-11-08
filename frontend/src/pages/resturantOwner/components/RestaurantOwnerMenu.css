@@ -1,0 +1,872 @@
+/* ==========================================================================
+   Restaurant owner — menu management
+   Scoped to .rmn-page so no other page is affected.
+   Tokens mirror RestaurantOrders.css / RestaurantOrderDetail.css / AddItem.css.
+   ========================================================================== */
+
+.rmn-page {
+  --rmn-ink: #15182e;
+  --rmn-text: #1d2036;
+  --rmn-soft-text: #5d6179;
+  --rmn-muted: #7b7f95;
+  --rmn-line: #e8eaf3;
+  --rmn-line-soft: #eef0f7;
+  --rmn-bg: #f3f4fa;
+  --rmn-card: #ffffff;
+  --rmn-accent: #ff7a2f;
+  --rmn-accent-dark: #e8651e;
+  --rmn-accent-soft: #fff0e6;
+  --rmn-danger: #d03f3f;
+  --rmn-success: #139660;
+  --rmn-amber: #b26a00;
+
+  min-height: 100%;
+  color: var(--rmn-text);
+  font-family: "Manrope", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.rmn-page *,
+.rmn-page *::before,
+.rmn-page *::after {
+  box-sizing: border-box;
+}
+
+.rmn-shell {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+}
+
+/* ---------- Page header ---------- */
+
+.rmn-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.rmn-head-text {
+  min-width: 0;
+}
+
+.rmn-title {
+  margin: 0;
+  font-family: "Sora", "Manrope", sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.9px;
+  line-height: 1.15;
+  color: var(--rmn-text);
+}
+
+.rmn-sub {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 8px 0 0;
+  color: #6a6e86;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rmn-sub svg {
+  flex-shrink: 0;
+  color: #8b8fa4;
+}
+
+.rmn-page .rmn-add.MuiButton-root {
+  flex-shrink: 0;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: var(--rmn-accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-transform: none;
+  box-shadow: 0 10px 22px rgba(255, 122, 47, 0.28);
+}
+
+.rmn-page .rmn-add.MuiButton-root:hover {
+  background: #f26a1c;
+  box-shadow: 0 12px 26px rgba(255, 122, 47, 0.36);
+}
+
+.rmn-page .rmn-add.MuiButton-root:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.45);
+  outline-offset: 2px;
+}
+
+/* ---------- Toolbar: category filters + total ---------- */
+
+.rmn-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.rmn-filters {
+  display: flex;
+  gap: 8px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.rmn-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.rmn-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  height: 38px;
+  padding: 0 13px;
+  border: 1px solid var(--rmn-line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #5d6179;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.rmn-filter:hover {
+  border-color: #ffc9a3;
+  color: #c2540f;
+}
+
+.rmn-filter.is-active {
+  border-color: var(--rmn-ink);
+  background: var(--rmn-ink);
+  color: #ffffff;
+}
+
+.rmn-filter-count {
+  min-width: 20px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--rmn-bg);
+  color: var(--rmn-muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.rmn-filter.is-active .rmn-filter-count {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.rmn-filter:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.45);
+  outline-offset: 2px;
+}
+
+.rmn-total {
+  flex-shrink: 0;
+  color: var(--rmn-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rmn-total strong {
+  color: var(--rmn-text);
+  font-weight: 800;
+}
+
+/* ---------- Availability view switch (small screens only) ---------- */
+
+.rmn-tabs {
+  display: none;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 16px;
+  border: 1px solid var(--rmn-line);
+  border-radius: 13px;
+  background: #ffffff;
+}
+
+.rmn-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+  height: 38px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--rmn-soft-text);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.rmn-tab > span {
+  min-width: 20px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--rmn-bg);
+  color: var(--rmn-muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.rmn-tab[aria-pressed="true"] {
+  background: var(--rmn-ink);
+  color: #ffffff;
+}
+
+.rmn-tab[aria-pressed="true"] > span {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.rmn-tab:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.45);
+  outline-offset: 2px;
+}
+
+/* ---------- Collections ---------- */
+
+.rmn-collections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.rmn-col {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--rmn-line);
+  border-radius: 22px;
+  background: var(--rmn-card);
+}
+
+.rmn-col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 6px 12px;
+  border-bottom: 1px solid var(--rmn-line-soft);
+}
+
+.rmn-col-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-family: "Sora", "Manrope", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.35px;
+  color: var(--rmn-text);
+}
+
+.rmn-col-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.rmn-col-dot--available {
+  background: var(--rmn-success);
+}
+
+.rmn-col-dot--unavailable {
+  background: var(--rmn-amber);
+}
+
+.rmn-count {
+  display: grid;
+  place-items: center;
+  min-width: 26px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--rmn-bg);
+  color: var(--rmn-soft-text);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.rmn-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Item row ---------- */
+
+.rmn-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--rmn-line-soft);
+}
+
+.rmn-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 6px;
+}
+
+.rmn-thumb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f1f2f8;
+  color: #b3b8cb;
+}
+
+.rmn-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rmn-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.rmn-row-name {
+  margin: 0;
+  color: var(--rmn-text);
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.15px;
+  overflow-wrap: anywhere;
+}
+
+.rmn-row-desc {
+  margin: 3px 0 0;
+  overflow: hidden;
+  color: var(--rmn-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rmn-row-desc.is-missing {
+  color: #a3a7ba;
+}
+
+.rmn-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--rmn-soft-text);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.rmn-meta-category {
+  color: #4a4e66;
+}
+
+.rmn-meta-sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #c3c7d6;
+}
+
+.rmn-meta-price {
+  color: var(--rmn-text);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.rmn-meta-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rmn-meta-time svg {
+  color: #9aa0b8;
+}
+
+/* ---------- Row controls ---------- */
+
+.rmn-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.rmn-page .rmn-switch {
+  margin: 0;
+  max-width: 160px;
+}
+
+.rmn-page .rmn-switch .MuiFormControlLabel-label {
+  padding-left: 2px;
+  color: var(--rmn-soft-text);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.rmn-page .rmn-switch .MuiSwitch-root {
+  flex-shrink: 0;
+}
+
+.rmn-page .MuiSwitch-track {
+  background-color: #d5d9e6;
+  opacity: 1;
+}
+
+.rmn-page .MuiSwitch-switchBase.Mui-checked {
+  color: #ffffff;
+}
+
+.rmn-page .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background-color: var(--rmn-accent);
+  opacity: 1;
+}
+
+.rmn-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rmn-page .rmn-icon.MuiIconButton-root {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: #7b7f95;
+}
+
+.rmn-page .rmn-icon.MuiIconButton-root:hover {
+  background: var(--rmn-bg);
+  color: var(--rmn-accent-dark);
+}
+
+.rmn-page .rmn-icon--danger.MuiIconButton-root:hover {
+  background: #ffecec;
+  color: var(--rmn-danger);
+}
+
+.rmn-page .rmn-icon.MuiIconButton-root:focus-visible {
+  outline: 2px solid rgba(255, 122, 47, 0.55);
+  outline-offset: 1px;
+}
+
+/* ---------- Empty / error states ---------- */
+
+.rmn-col-empty {
+  margin: 0;
+  padding: 46px 14px;
+  color: var(--rmn-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rmn-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  border: 1px dashed #d8dceb;
+  border-radius: 22px;
+  background: var(--rmn-card);
+  text-align: center;
+}
+
+.rmn-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 6px;
+  border-radius: 14px;
+  background: var(--rmn-accent-soft);
+  color: var(--rmn-accent);
+}
+
+.rmn-empty-icon--alert {
+  background: #ffecec;
+  color: var(--rmn-danger);
+}
+
+.rmn-empty h2 {
+  margin: 0;
+  font-family: "Sora", "Manrope", sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.rmn-empty p {
+  margin: 0;
+  color: var(--rmn-soft-text);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.rmn-page .rmn-empty-action.MuiButton-root {
+  height: 42px;
+  margin-top: 10px;
+  padding: 0 18px;
+  border: 1px solid var(--rmn-line);
+  border-radius: 11px;
+  background: #ffffff;
+  color: #3a3e56;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: none;
+  box-shadow: none;
+}
+
+.rmn-page .rmn-empty-action.MuiButton-root:hover {
+  border-color: #ffc9a3;
+  background: #fffaf6;
+  color: var(--rmn-accent-dark);
+}
+
+.rmn-page .rmn-empty-action--primary.MuiButton-root {
+  border-color: var(--rmn-accent);
+  background: var(--rmn-accent);
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(255, 122, 47, 0.28);
+}
+
+.rmn-page .rmn-empty-action--primary.MuiButton-root:hover {
+  border-color: #f26a1c;
+  background: #f26a1c;
+  color: #ffffff;
+}
+
+.rmn-page .rmn-empty-action.MuiButton-root:focus-visible {
+  outline: 3px solid rgba(255, 122, 47, 0.45);
+  outline-offset: 2px;
+}
+
+/* ---------- Loading skeleton ---------- */
+
+.rmn-skeleton {
+  animation: rmn-fade 0.3s ease both;
+}
+
+.rmn-skel-toolbar {
+  width: 100%;
+  max-width: 460px;
+  height: 38px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+}
+
+.rmn-skel-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.rmn-skel-panel {
+  padding: 16px;
+  border: 1px solid var(--rmn-line);
+  border-radius: 22px;
+  background: var(--rmn-card);
+}
+
+.rmn-skel-head {
+  width: 132px;
+  height: 18px;
+  margin: 8px 6px 22px;
+  border-radius: 7px;
+}
+
+.rmn-skel-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 6px;
+  border-top: 1px solid var(--rmn-line-soft);
+}
+
+.rmn-skel-thumb {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+}
+
+.rmn-skel-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  flex: 1;
+}
+
+.rmn-skel-lines span {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.rmn-skel-lines span:first-child {
+  width: 58%;
+}
+
+.rmn-skel-lines span:last-child {
+  width: 82%;
+}
+
+.rmn-skel-toolbar,
+.rmn-skel-head,
+.rmn-skel-thumb,
+.rmn-skel-lines span {
+  background: linear-gradient(90deg, #e7eaf3 25%, #f6f7fc 37%, #e7eaf3 63%);
+  background-size: 400% 100%;
+  animation: rmn-shimmer 1.4s ease infinite;
+}
+
+@keyframes rmn-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@keyframes rmn-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rmn-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Responsive ---------- */
+
+/* Two readable collections need ~1100px of content; below that, switch views. */
+@media (max-width: 1199px) {
+  .rmn-tabs {
+    display: flex;
+  }
+
+  .rmn-collections,
+  .rmn-skel-panels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rmn-collections[data-active="available"] .rmn-col--unavailable,
+  .rmn-collections[data-active="unavailable"] .rmn-col--available {
+    display: none;
+  }
+
+  .rmn-skel-panels .rmn-skel-panel + .rmn-skel-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .rmn-shell {
+    padding: 24px 20px 40px;
+  }
+}
+
+@media (max-width: 700px) {
+  .rmn-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .rmn-page .rmn-add.MuiButton-root {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .rmn-shell {
+    padding: 20px 14px 32px;
+  }
+
+  .rmn-title {
+    font-size: 23px;
+  }
+
+  .rmn-page .rmn-add.MuiButton-root {
+    width: 100%;
+  }
+
+  .rmn-toolbar {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .rmn-total {
+    display: none;
+  }
+
+  .rmn-filters {
+    gap: 6px;
+    width: 100%;
+  }
+
+  .rmn-filter {
+    gap: 6px;
+    height: 36px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .rmn-filter-count {
+    min-width: 18px;
+    padding: 2px 5px;
+    font-size: 10.5px;
+  }
+
+  .rmn-col {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .rmn-col-head {
+    min-height: 40px;
+    padding: 0 4px 10px;
+  }
+
+  .rmn-col-title {
+    font-size: 16px;
+  }
+
+  .rmn-row {
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    padding: 12px 4px;
+  }
+
+  .rmn-thumb {
+    width: 52px;
+    height: 52px;
+  }
+
+  .rmn-row-body {
+    flex: 1 1 0;
+    width: calc(100% - 64px);
+  }
+
+  .rmn-row-desc {
+    display: none;
+  }
+
+  .rmn-meta {
+    gap: 6px;
+    margin-top: 7px;
+    font-size: 12px;
+  }
+
+  .rmn-row-name {
+    font-size: 14px;
+  }
+
+  .rmn-controls {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    padding-top: 2px;
+  }
+
+  .rmn-page .rmn-switch {
+    max-width: none;
+  }
+
+  .rmn-empty {
+    padding: 40px 18px;
+  }
+}
+
+/* Four category labels fit without a clipped pill on the narrowest phones. */
+@media (max-width: 430px) {
+  .rmn-filter {
+    padding: 0 12px;
+  }
+
+  .rmn-filter-count {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rmn-page *,
+  .rmn-page *::before,
+  .rmn-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

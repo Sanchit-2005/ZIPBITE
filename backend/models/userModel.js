@@ -21,6 +21,9 @@ const userSchema = new Schema({
     enum: ["customer", "restaurant", "delivery", "admin"],
     default: "customer",
   },
+  image: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

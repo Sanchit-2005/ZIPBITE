@@ -22,6 +22,8 @@ import RestaurantOrderDetail from "./pages/resturantOwner/components/RestaurantO
 import RestaurantOwnerMenu from "./pages/resturantOwner/components/RestaurantOwnerMenu";
 import AddItem from "./pages/resturantOwner/components/AddItem";
 import EditItem from "./pages/resturantOwner/components/EditItem";
+import RestaurantOwnerProfile from "./pages/resturantOwner/components/RestaurantOwnerProfile";
+import EditProfile from "./pages/resturantOwner/components/EditProfile";
 function App() {
   return (
     <Routes>
@@ -85,6 +87,22 @@ function App() {
         element={
           <RestaurantOwnerProvider>
             <EditItem />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-owner/profile"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOwnerProfile />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-owner/profile/edit"
+        element={
+          <RestaurantOwnerProvider>
+            <EditProfile />
           </RestaurantOwnerProvider>
         }
       />

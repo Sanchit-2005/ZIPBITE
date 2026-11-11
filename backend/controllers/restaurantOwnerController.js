@@ -1,5 +1,6 @@
 import Restaurant from "../models/restaurant.js";
 import Order from "../models/order.js";
+import User from "../models/userModel.js";
 import { StatusCodes } from "http-status-codes";
 import asyncWrapper from "../asyncWrap.js";
 
@@ -231,7 +232,7 @@ const monthlyRevenue = async (req, res) => {
 const restaurntOwnerInfo = asyncWrapper(async (req, res) => {
   const restaurant = await Restaurant.findOne({
     owner: req.user._id,
-  }).populate("owner", "name email phone");
+  }).populate("owner", "name email phone image role");
 
   if (!restaurant) {
     return res
@@ -245,6 +246,75 @@ const restaurntOwnerInfo = asyncWrapper(async (req, res) => {
   });
 });
 
+const updateOwnerProfile = asyncWrapper(async (req, res) => {
+  const { name, email, phone, image } = req.body || {};
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "Owner account not found" });
+  }
+
+  if (name !== undefined) {
+    const nextName = String(name).trim();
+
+    if (!nextName) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Name is required" });
+    }
+
+    user.name = nextName;
+  }
+
+  if (email !== undefined) {
+    const nextEmail = String(email).trim().toLowerCase();
+
+    if (!nextEmail) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Email is required" });
+    }
+
+    const escapedEmail = nextEmail.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const emailInUse = await User.findOne({
+      _id: { $ne: user._id },
+      email: { $regex: `^${escapedEmail}$`, $options: "i" },
+    });
+
+    if (emailInUse) {
+      return res
+        .status(StatusCodes.CONFLICT)
+        .json({ message: "That email is already in use" });
+    }
+
+    user.email = nextEmail;
+  }
+
+  if (phone !== undefined) {
+    user.phone = String(phone).trim();
+  }
+
+  if (image !== undefined) {
+    user.image = String(image).trim();
+  }
+
+  await user.save();
+
+  return res.status(StatusCodes.OK).json({
+    message: "Profile updated successfully",
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      image: user.image,
+      role: user.role,
+    },
+  });
+});
+
 export {
   getRestaurantOrders,
   acceptOrder,
@@ -252,4 +322,5 @@ export {
   updateOrderStatus,
   monthlyRevenue,
   restaurntOwnerInfo,
+  updateOwnerProfile,
 };

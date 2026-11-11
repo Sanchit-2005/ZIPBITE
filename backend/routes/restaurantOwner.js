@@ -8,13 +8,14 @@ import {
   updateOrderStatus,
   monthlyRevenue,
   restaurntOwnerInfo,
+  updateOwnerProfile,
 } from "../controllers/restaurantOwnerController.js";
 
 router
   .route("/restaurant-owner/orders")
   .get(authenticateUser, getRestaurantOrders);
 
-// ⚠️ Static routes must be declared BEFORE parameterised routes
+
 router
   .route("/restaurant-owner/orders/monthly-revenue")
   .get(authenticateUser, monthlyRevenue);
@@ -34,5 +35,9 @@ router
 router
   .route("/restaurant-owner/ownerInfo")
   .get(authenticateUser, restaurntOwnerInfo);
+
+router
+  .route("/restaurant-owner/profile")
+  .patch(authenticateUser, updateOwnerProfile);
 
 export default router;

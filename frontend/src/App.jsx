@@ -24,6 +24,7 @@ import AddItem from "./pages/resturantOwner/components/AddItem";
 import EditItem from "./pages/resturantOwner/components/EditItem";
 import RestaurantOwnerProfile from "./pages/resturantOwner/components/RestaurantOwnerProfile";
 import EditProfile from "./pages/resturantOwner/components/EditProfile";
+import ChatTest from "./ChatPage/ChatTest";
 function App() {
   return (
     <Routes>
@@ -106,6 +107,7 @@ function App() {
           </RestaurantOwnerProvider>
         }
       />
+      <Route path="chat" element={<ChatTest />} />
     </Routes>
   );
 }

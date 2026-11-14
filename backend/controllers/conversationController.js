@@ -1,12 +1,11 @@
-import Conversation from "../models/Conversation.js";
-import message from "../models/message.js";
+﻿import Conversation from "../models/Conversation.js";
 import Message from "../models/message.js";
 import { StatusCodes } from "http-status-codes";
 import Restaurant from "../models/restaurant.js";
 
 const createConversation = async (req, res) => {
   try {
-    const customerId = req.user.id;
+    const customerId = req.user.id || req.user._id;
     const { restaurantId } = req.body;
 
     if (!restaurantId) {
@@ -28,10 +27,7 @@ const createConversation = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      success: true,
-      conversation,
-    });
+    return res.status(200).json({ success: true, conversation });
   } catch (error) {
     console.error(error);
 
@@ -43,16 +39,18 @@ const createConversation = async (req, res) => {
 };
 
 const customerConversation = async (req, res) => {
-  const customerId = req.user.id;
+  const customerId = req.user.id || req.user._id;
 
   const conversation = await Conversation.findOne({
     customer: customerId,
   }).populate("restaurant");
+
   if (!conversation) {
     return res
-      .send(StatusCodes.NOT_FOUND)
+      .status(StatusCodes.NOT_FOUND)
       .json({ message: "no conversation found" });
   }
+
   return res.status(StatusCodes.OK).json({
     success: true,
     message: "Customer conversations fetched successfully",
@@ -61,17 +59,17 @@ const customerConversation = async (req, res) => {
 };
 
 const ownerConversation = async (req, res) => {
-  const owner_Id = req.user.id;
-  const restaurant = await Restaurant.findOne({
-    owner: ownerId,
-  });
+  const ownerId = req.user.id || req.user._id;
+  const restaurant = await Restaurant.findOne({ owner: ownerId });
+
   if (!restaurant) {
-    return res.send(StatusCodes.NOT_FOUND).json({ messgae: "no owner found" });
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "no owner found" });
   }
-  const conversations = await Conversation.find({
-    restaurant: restaurant._id,
-  })
-    .populate("customer")
+
+  const conversations = await Conversation.find({ restaurant: restaurant._id })
+    .populate("customer", "name email")
     .sort({ lastMessageAt: -1 });
 
   return res.status(StatusCodes.OK).json({
@@ -81,4 +79,62 @@ const ownerConversation = async (req, res) => {
   });
 };
 
-export { createConversation, customerConversation ,ownerConversation};
+const getConversationMessages = async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const userId = (
+      req.user.id ||
+      req.user._id ||
+      req.user.customerId
+    )?.toString();
+
+    const conversation = await Conversation.findById(conversationId);
+
+    if (!conversation) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        success: false,
+        message: "Conversation not found",
+      });
+    }
+
+    const isCustomer = conversation.customer.toString() === userId;
+
+    let isOwner = false;
+
+    if (!isCustomer) {
+      const restaurant = await Restaurant.findOne({
+        _id: conversation.restaurant,
+        owner: userId,
+      });
+
+      isOwner = Boolean(restaurant);
+    }
+
+    if (!isCustomer && !isOwner) {
+      return res.status(StatusCodes.FORBIDDEN).json({
+        success: false,
+        message: "You are not authorized to access these messages",
+      });
+    }
+
+    const messages = await Message.find({ conversation: conversationId })
+      .populate("sender", "name")
+      .sort({ createdAt: 1 });
+
+    return res.status(StatusCodes.OK).json({ success: true, messages });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Failed to fetch messages",
+    });
+  }
+};
+
+export {
+  createConversation,
+  customerConversation,
+  ownerConversation,
+  getConversationMessages,
+};

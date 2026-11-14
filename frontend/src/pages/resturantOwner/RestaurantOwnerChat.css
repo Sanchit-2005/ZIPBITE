@@ -1,0 +1,354 @@
+/* RestaurantOwnerChat.css - ZipBite Owner Message Thread */
+:root {
+  --rot-ink: #15182e;
+  --rot-ink-2: #232846;
+  --rot-text: #1d2036;
+  --rot-muted: #7b7f95;
+  --rot-line: #e8eaf3;
+  --rot-bg: #f3f4fa;
+  --rot-card: #ffffff;
+  --rot-accent: #ff7a2f;
+  --rot-accent-hover: #e8681f;
+  --rot-accent-soft: #fff0e6;
+  --rot-shadow: 0 16px 36px rgba(21, 24, 46, 0.06);
+}
+
+.rot-wrapper {
+  padding: 28px 32px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Back Link Button */
+.rot-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--rot-muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 16px;
+  padding: 6px 0;
+  transition: all 0.2s ease;
+}
+
+.rot-back-link:hover {
+  color: var(--rot-accent);
+  transform: translateX(-3px);
+}
+
+/* Chat Card Shell */
+.rot-chat-card {
+  background: var(--rot-card);
+  border: 1px solid var(--rot-line);
+  border-radius: 24px;
+  box-shadow: var(--rot-shadow);
+  display: flex;
+  flex-direction: column;
+  height: 720px;
+  max-height: 82vh;
+  overflow: hidden;
+}
+
+/* Chat Header */
+.rot-chat-header {
+  padding: 18px 26px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--rot-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  z-index: 10;
+}
+
+.rot-header-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rot-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--rot-accent) 0%, #ff9800 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(255, 122, 47, 0.25);
+}
+
+.rot-user-info h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--rot-text);
+}
+
+.rot-user-info p {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: var(--rot-muted);
+}
+
+.rot-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--rot-accent-soft);
+  color: var(--rot-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.rot-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* Chat Thread */
+.rot-thread {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rot-thread::-webkit-scrollbar {
+  width: 6px;
+}
+
+.rot-thread::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* Message Rows & Bubbles */
+.rot-message-row {
+  display: flex;
+  width: 100%;
+}
+
+.rot-message-row.owner {
+  justify-content: flex-end;
+}
+
+.rot-message-row.customer {
+  justify-content: flex-start;
+}
+
+.rot-bubble {
+  max-width: 68%;
+  padding: 13px 18px;
+  border-radius: 18px;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  animation: rotFadeIn 0.2s ease-out;
+}
+
+@keyframes rotFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rot-bubble.owner {
+  background: linear-gradient(135deg, var(--rot-accent) 0%, var(--rot-accent-hover) 100%);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 14px rgba(255, 122, 47, 0.25);
+}
+
+.rot-bubble.customer {
+  background: #ffffff;
+  color: var(--rot-text);
+  border: 1px solid var(--rot-line);
+  border-bottom-left-radius: 4px;
+}
+
+.rot-bubble-text {
+  margin: 0;
+}
+
+.rot-bubble-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 0.72rem;
+  margin-top: 6px;
+}
+
+.rot-bubble.owner .rot-bubble-meta {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rot-bubble.customer .rot-bubble-meta {
+  color: var(--rot-muted);
+}
+
+/* Empty State */
+.rot-empty-thread {
+  margin: auto;
+  text-align: center;
+  color: var(--rot-muted);
+  max-width: 340px;
+  padding: 30px 10px;
+}
+
+.rot-empty-icon {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+}
+
+.rot-empty-thread h5 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--rot-text);
+  margin: 0 0 6px;
+}
+
+.rot-empty-thread p {
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+/* Input Area */
+.rot-input-area {
+  padding: 18px 24px;
+  background: #ffffff;
+  border-top: 1px solid var(--rot-line);
+}
+
+.rot-input-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1.5px solid var(--rot-line);
+  border-radius: 16px;
+  padding: 6px 8px 6px 16px;
+  transition: all 0.2s ease;
+}
+
+.rot-input-form:focus-within {
+  border-color: var(--rot-accent);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 122, 47, 0.12);
+}
+
+.rot-input-field {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 0;
+  font-size: 0.95rem;
+  color: var(--rot-text);
+  outline: none;
+}
+
+.rot-input-field::placeholder {
+  color: #94a3b8;
+}
+
+.rot-send-btn {
+  background: linear-gradient(135deg, var(--rot-accent) 0%, var(--rot-accent-hover) 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(255, 122, 47, 0.25);
+}
+
+.rot-send-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(255, 122, 47, 0.35);
+}
+
+.rot-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading Center */
+.rot-loading {
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--rot-muted);
+  font-weight: 600;
+}
+
+.rot-spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--rot-line);
+  border-top-color: var(--rot-accent);
+  border-radius: 50%;
+  animation: rotSpin 0.8s linear infinite;
+}
+
+@keyframes rotSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .rot-wrapper {
+    padding: 16px 10px 30px;
+  }
+
+  .rot-chat-card {
+    height: calc(100vh - 120px);
+    max-height: none;
+    border-radius: 18px;
+  }
+
+  .rot-bubble {
+    max-width: 82%;
+  }
+
+  .rot-thread {
+    padding: 16px;
+  }
+
+  .rot-input-area {
+    padding: 12px 14px;
+  }
+}

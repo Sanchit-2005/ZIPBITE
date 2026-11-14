@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import heroImg from "./assets/hero.png";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
@@ -25,6 +25,10 @@ import EditItem from "./pages/resturantOwner/components/EditItem";
 import RestaurantOwnerProfile from "./pages/resturantOwner/components/RestaurantOwnerProfile";
 import EditProfile from "./pages/resturantOwner/components/EditProfile";
 import ChatTest from "./ChatPage/ChatTest";
+import CustomerChat from "./pages/customer/CustomerChat";
+import RestaurantOwnerChats from "./pages/resturantOwner/RestaurantOwnerChats";
+import RestaurantOwnerChat from "./pages/resturantOwner/RestaurantOwnerChat";
+
 function App() {
   return (
     <Routes>
@@ -33,81 +37,24 @@ function App() {
       <Route path="/menu" element={<MenuPage />}></Route>
       <Route path="/items/:id" element={<ItemDetails />} />
       <Route path="/restaurants" element={<RestaurantPage />} />
-      <Route
-        path="/restaurants/:restaurantId"
-        element={<RestaurantDetails />}
-      />
-      <Route path="/search" element={<Search />}></Route>
-      <Route path="/cart" element={<Cart />}></Route>
-      <Route path="orders" element={<Order />}></Route>
-      <Route path="checkout" element={<Checkout />}></Route>
+      <Route path="/restaurants/:restaurantId" element={<RestaurantDetails />} />
+      <Route path="/search" element={<Search />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="orders" element={<Order />} />
+      <Route path="checkout" element={<Checkout />} />
 
-      {/* Specific routes MUST come before the wildcard */}
-      <Route
-        path="/restaurant-owner/orders"
-        element={
-          <RestaurantOwnerProvider>
-            <RestaurantOrders />
-          </RestaurantOwnerProvider>
-        }
-      />
-      <Route
-        path="/restaurant-orders/orders/:orderId"
-        element={
-          <RestaurantOwnerProvider>
-            <RestaurantOrderDetail />
-          </RestaurantOwnerProvider>
-        }
-      />
-      <Route
-        path="/restaurant-owner/"
-        element={
-          <RestaurantOwnerProvider>
-            <RestaurantOwner />
-          </RestaurantOwnerProvider>
-        }
-      />
-      <Route
-        path="/restaurant-owner/menu"
-        element={
-          <RestaurantOwnerProvider>
-            <RestaurantOwnerMenu />
-          </RestaurantOwnerProvider>
-        }
-      />
-      <Route
-        path="/restaurant-owner/menu/addNewItem"
-        element={
-          <RestaurantOwnerProvider>
-            <AddItem />
-          </RestaurantOwnerProvider>
-        }
-      />
-      <Route
-        path="/restaurant-owner/menu/editItem/:itemId"
-        element={
-          <RestaurantOwnerProvider>
-            <EditItem />
-          </RestaurantOwnerProvider>
-        }
-      />
-      <Route
-        path="/restaurant-owner/profile"
-        element={
-          <RestaurantOwnerProvider>
-            <RestaurantOwnerProfile />
-          </RestaurantOwnerProvider>
-        }
-      />
-      <Route
-        path="/restaurant-owner/profile/edit"
-        element={
-          <RestaurantOwnerProvider>
-            <EditProfile />
-          </RestaurantOwnerProvider>
-        }
-      />
+      <Route path="/restaurant-owner/orders" element={<RestaurantOwnerProvider><RestaurantOrders /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-orders/orders/:orderId" element={<RestaurantOwnerProvider><RestaurantOrderDetail /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-owner/" element={<RestaurantOwnerProvider><RestaurantOwner /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-owner/menu" element={<RestaurantOwnerProvider><RestaurantOwnerMenu /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-owner/menu/addNewItem" element={<RestaurantOwnerProvider><AddItem /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-owner/menu/editItem/:itemId" element={<RestaurantOwnerProvider><EditItem /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-owner/profile" element={<RestaurantOwnerProvider><RestaurantOwnerProfile /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-owner/profile/edit" element={<RestaurantOwnerProvider><EditProfile /></RestaurantOwnerProvider>} />
       <Route path="chat" element={<ChatTest />} />
+      <Route path="/customer/chat/:restaurantId" element={<CustomerChat />} />
+      <Route path="/restaurant-owner/chats" element={<RestaurantOwnerProvider><RestaurantOwnerChats /></RestaurantOwnerProvider>} />
+      <Route path="/restaurant-owner/chats/:conversationId" element={<RestaurantOwnerProvider><RestaurantOwnerChat /></RestaurantOwnerProvider>} />
     </Routes>
   );
 }

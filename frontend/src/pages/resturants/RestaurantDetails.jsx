@@ -54,8 +54,14 @@ export default function RestaurantDetails() {
           : {};
 
         const [restaurantRes, menuRes] = await Promise.all([
-          axios.get(`http://localhost:8000/restaurants/${restaurantId}`, config),
-          axios.get(`http://localhost:8000/api/restaurants/${restaurantId}`, config),
+          axios.get(
+            `http://localhost:8000/restaurants/${restaurantId}`,
+            config,
+          ),
+          axios.get(
+            `http://localhost:8000/api/restaurants/${restaurantId}`,
+            config,
+          ),
         ]);
 
         setRestaurant(restaurantRes.data.restaurant ?? restaurantRes.data);
@@ -187,6 +193,14 @@ export default function RestaurantDetails() {
                 Explore the <span>menu.</span>
               </h2>
               <p>Find your cravings. We've got you covered.</p>
+              <br />
+              <br />
+              <button
+                style={{ background: "blue", color: "white" }}
+                onClick={() => navigate(`/customer/chat/${restaurantId}`)}
+              >
+                Chat with restaurant owner
+              </button>
             </div>
 
             <div className="zb-menu-count">
@@ -227,6 +241,7 @@ export default function RestaurantDetails() {
               <span>🍽️</span>
               <h3>No dishes found</h3>
               <p>Try another search or category.</p>
+
               <button
                 onClick={() => {
                   setSearch("");

@@ -1,15 +1,17 @@
 ﻿import { Router } from "express";
+import authenticateUser from "../middleware/auth.js";
 import {
   createConversation,
   customerConversation,
   ownerConversation,
+  getConversationMessages,
 } from "../controllers/conversationController.js";
-import authenticateUser from "../middleware/auth.js";
 
 const router = Router();
 
-router.route("/conversation").post(authenticateUser, createConversation);
-router.route("/user-conversation").get(authenticateUser, customerConversation);
-router.route("/owner-conversation").get(authenticateUser, ownerConversation);
+router.post("/", authenticateUser, createConversation);
+router.get("/user-conversation", authenticateUser, customerConversation);
+router.get("/owner-conversation", authenticateUser, ownerConversation);
+router.get("/:conversationId/messages", authenticateUser, getConversationMessages);
 
 export default router;

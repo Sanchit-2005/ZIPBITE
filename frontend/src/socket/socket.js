@@ -2,7 +2,14 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:8000", {
   autoConnect: false,
-  withCredentials: true,
+
+  auth: (callback) => {
+    const token = localStorage.getItem("token");
+
+    callback({
+      token: token,
+    });
+  },
 });
 
 export default socket;

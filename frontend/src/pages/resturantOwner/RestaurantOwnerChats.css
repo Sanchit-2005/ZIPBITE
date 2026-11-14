@@ -1,0 +1,348 @@
+/* RestaurantOwnerChats.css - ZipBite Owner Messaging Hub */
+:root {
+  --roc-ink: #15182e;
+  --roc-ink-2: #232846;
+  --roc-text: #1d2036;
+  --roc-muted: #7b7f95;
+  --roc-line: #e8eaf3;
+  --roc-bg: #f3f4fa;
+  --roc-card: #ffffff;
+  --roc-accent: #ff7a2f;
+  --roc-accent-hover: #e8681f;
+  --roc-accent-soft: #fff0e6;
+  --roc-shadow: 0 16px 36px rgba(21, 24, 46, 0.06);
+}
+
+.roc-wrapper {
+  padding: 36px 32px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Banner */
+.roc-header {
+  background:
+    radial-gradient(500px 200px at 90% -20%, rgba(255, 122, 47, 0.35), transparent 70%),
+    linear-gradient(135deg, var(--roc-ink) 0%, var(--roc-ink-2) 100%);
+  border-radius: 24px;
+  padding: 32px 36px;
+  color: #ffffff;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-shadow: 0 20px 40px -15px rgba(21, 24, 46, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.roc-header::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 24px solid rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.roc-header-text h2 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 6px;
+}
+
+.roc-header-text p {
+  color: #aeb4d2;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.roc-header-badge {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.roc-header-badge span {
+  background: var(--roc-accent);
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+/* Card Container */
+.roc-card {
+  background: var(--roc-card);
+  border: 1px solid var(--roc-line);
+  border-radius: 24px;
+  box-shadow: var(--roc-shadow);
+  overflow: hidden;
+}
+
+/* Top toolbar */
+.roc-toolbar {
+  padding: 20px 26px;
+  border-bottom: 1px solid var(--roc-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #ffffff;
+}
+
+.roc-toolbar-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--roc-text);
+  margin: 0;
+}
+
+.roc-search-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+}
+
+.roc-search-input {
+  width: 100%;
+  padding: 10px 16px 10px 38px;
+  background: #f8fafc;
+  border: 1.5px solid var(--roc-line);
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: var(--roc-text);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.roc-search-input:focus {
+  border-color: var(--roc-accent);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 122, 47, 0.12);
+}
+
+.roc-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--roc-muted);
+  font-size: 0.9rem;
+}
+
+/* List Items */
+.roc-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.roc-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 26px;
+  border-bottom: 1px solid var(--roc-line);
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.roc-item:last-child {
+  border-bottom: none;
+}
+
+.roc-item:hover {
+  background: #f8fafc;
+  transform: translateX(4px);
+}
+
+.roc-item:hover .roc-avatar {
+  transform: scale(1.05);
+}
+
+.roc-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--roc-accent) 0%, #ff9800 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(255, 122, 47, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.roc-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.roc-details-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.roc-customer-name {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--roc-text);
+  margin: 0;
+}
+
+.roc-time {
+  font-size: 0.78rem;
+  color: var(--roc-muted);
+  white-space: nowrap;
+}
+
+.roc-details-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.roc-preview-text {
+  font-size: 0.88rem;
+  color: var(--roc-muted);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 560px;
+}
+
+.roc-open-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--roc-accent);
+  background: var(--roc-accent-soft);
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.2s ease;
+}
+
+.roc-item:hover .roc-open-pill {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Empty State */
+.roc-empty {
+  padding: 70px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--roc-muted);
+}
+
+.roc-empty-icon {
+  width: 72px;
+  height: 72px;
+  background: var(--roc-accent-soft);
+  color: var(--roc-accent);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.roc-empty h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--roc-text);
+  margin: 0 0 6px;
+}
+
+.roc-empty p {
+  font-size: 0.92rem;
+  margin: 0;
+  max-width: 380px;
+}
+
+/* Loading state */
+.roc-loading {
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--roc-muted);
+  font-weight: 600;
+}
+
+.roc-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--roc-line);
+  border-top-color: var(--roc-accent);
+  border-radius: 50%;
+  animation: rocSpin 0.8s linear infinite;
+}
+
+@keyframes rocSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .roc-wrapper {
+    padding: 20px 14px 40px;
+  }
+
+  .roc-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+  }
+
+  .roc-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .roc-search-wrap {
+    max-width: 100%;
+  }
+
+  .roc-preview-text {
+    max-width: 220px;
+  }
+}

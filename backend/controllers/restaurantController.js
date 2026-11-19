@@ -2,6 +2,7 @@ import Restaurant from "../models/restaurant.js";
 import { StatusCodes } from "http-status-codes";
 import geocodeAddress from "../utils/geocodeAddress.js";
 import MenuItem from "../models/menuItem.js";
+import clearCache from "../utils/clearCache.js";
 
 const registerRestaurant = async (req, res) => {
   try {
@@ -43,6 +44,11 @@ const registerRestaurant = async (req, res) => {
     });
 
     await hotel.save();
+    await clearCache([
+      "cache:/restaurants*",
+      "cache:/nearby*",
+      "cache:/search*",
+    ]);
 
     return res.status(StatusCodes.CREATED).json({
       message: "Restaurant added successfully!",
@@ -100,6 +106,11 @@ const editRestaurant = async (req, res) => {
         typeof location === "string" ? JSON.parse(location) : location;
     }
     await restaurant.save();
+    await clearCache([
+      "cache:/restaurants*",
+      "cache:/nearby*",
+      "cache:/search*",
+    ]);
     res.status(StatusCodes.ACCEPTED).json({ message: "Updated the details" });
   } catch (err) {
     console.log(err);
@@ -116,6 +127,11 @@ const deleteRestaurant = async (req, res) => {
       });
     }
     await restaurant.deleteOne();
+    await clearCache([
+      "cache:/restaurants*",
+      "cache:/nearby*",
+      "cache:/search*",
+    ]);
     res.status(StatusCodes.ACCEPTED).json({ message: "Restaurant Deleted" });
   } catch (err) {
     console.log(err);

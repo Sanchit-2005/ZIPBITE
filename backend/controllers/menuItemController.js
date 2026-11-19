@@ -1,5 +1,6 @@
 import MenuItem from "../models/menuItem.js";
 import { StatusCodes } from "http-status-codes";
+import clearCache from "../utils/clearCache.js";
 const addItem = async (req, res) => {
   try {
     const {
@@ -37,6 +38,11 @@ const addItem = async (req, res) => {
 
     // 3. Save the item
     await menuItem.save();
+    await clearCache([
+      "cache:/restaurants*",
+      "cache:/nearby*",
+      "cache:/search*",
+    ]);
 
     return res.status(StatusCodes.CREATED).json({
       message: "New food item added successfully!",
@@ -95,6 +101,12 @@ const deleteItem = async (req, res) => {
     res
       .status(StatusCodes.ACCEPTED)
       .json({ message: "item deleted successfully !" });
+
+    await clearCache([
+      "cache:/restaurants*",
+      "cache:/nearby*",
+      "cache:/search*",
+    ]);
   } catch (err) {
     console.log(err);
     throw err;
@@ -121,6 +133,11 @@ const updateItem = async (req, res) => {
     if (image !== undefined) item.image = image;
 
     await item.save();
+    await clearCache([
+      "cache:/restaurants*",
+      "cache:/nearby*",
+      "cache:/search*",
+    ]);
     res
       .status(StatusCodes.ACCEPTED)
       .json({ message: "Item updated successfully ", item });
@@ -158,6 +175,7 @@ const manageItemAvaibility = async (req, res) => {
         message: "Menu item not found",
       });
     }
+    await clearCache(["cache:*restaurant*", "cache:*menu-items*"]);
     res.status(200).json({
       message: "Availability updated successfully",
       item,
@@ -167,4 +185,12 @@ const manageItemAvaibility = async (req, res) => {
   }
 };
 
-export { addItem, getItems, oneItem, deleteItem, updateItem, getAllItems,manageItemAvaibility };
+export {
+  addItem,
+  getItems,
+  oneItem,
+  deleteItem,
+  updateItem,
+  getAllItems,
+  manageItemAvaibility,
+};

@@ -9,10 +9,11 @@ import {
 } from "../controllers/menuItemController.js";
 import { Router } from "express";
 import authenticateUser from "../middleware/auth.js";
+import cacheMiddleware from "../middleware/cacheMiddleware.js";
 const router = Router();
-router.route("/menu-items").get(getAllItems);
+router.route("/menu-items").get(cacheMiddleware, getAllItems);
 router.route("/restaurants").post(authenticateUser, addItem);
-router.route("/restaurants/:restaurantId").get(getItems);
+router.route("/restaurants/:restaurantId").get(cacheMiddleware, getItems);
 router.route("/menu-item/:itemId").get(oneItem);
 router.route("/menu-item/:itemId").delete(authenticateUser, deleteItem);
 router.route("/menu-item/:itemId").patch(authenticateUser, updateItem);

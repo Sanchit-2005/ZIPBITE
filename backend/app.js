@@ -18,6 +18,8 @@ import jwt from "jsonwebtoken";
 import Conversation from "./models/Conversation.js";
 import Restaurant from "./models/restaurant.js";
 import Message from "./models/message.js";
+import "dotenv/config";
+import redisClient from "./config/redis.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -176,16 +178,6 @@ io.on("connection", (socket) => {
   });
 });
 
-mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => {
-    console.log("database is connected");
-  })
-  .catch((e) => {
-    console.log("database is not connected");
-    throw e;
-  });
-
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -206,6 +198,23 @@ app.use("/apiV4", ownerRoute);
 app.use("/upload", uploadRoute);
 app.use("/chat", chatRoute);
 
-server.listen(process.env.PORT, () => {
-  console.log(`app is listening on port ${process.env.PORT}`);
-});
+async function startServer() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log("MongoDB connected successfully!");
+
+    await redisClient.connect();
+    
+
+    console.log("Redis PING:", await redisClient.ping());
+
+    server.listen(process.env.PORT, () => {
+      console.log(`server  is listening on port ${process.env.PORT}`);
+    });
+  } catch (error) {
+    console.error("Server startup failed:", error);
+    process.exit(1);
+  }
+}
+
+startServer();

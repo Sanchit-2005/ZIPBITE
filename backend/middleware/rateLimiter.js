@@ -23,8 +23,11 @@ const rateLimiter = (limit = 5, windowSeconds = 60) => {
 
       next();
     } catch (err) {
-      console.error("Rate limiter error:", err);
-      next(); // fail open
+      console.warn(
+        "Rate limiter skipped because Redis is unavailable:",
+        err.message,
+      );
+      next();
     }
   };
 };

@@ -204,10 +204,17 @@ async function startServer() {
     await mongoose.connect(process.env.MONGODB_URL);
     console.log("MongoDB connected successfully!");
 
-    console.log("Redis PING:", await redisClient.ping());
+    // Check Redis without blocking server startup
+    try {
+      const response = await redisClient.ping();
+      console.log("Redis connected:", response);
+    } catch (redisError) {
+      console.error("Redis unavailable:", redisError.message);
+      console.log("Starting server without Redis...");
+    }
 
     server.listen(process.env.PORT, () => {
-      console.log(`server  is listening on port ${process.env.PORT}`);
+      console.log(`Server is listening on port ${process.env.PORT}`);
     });
   } catch (error) {
     console.error("Server startup failed:", error);

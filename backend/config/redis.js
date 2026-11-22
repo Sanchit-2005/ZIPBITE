@@ -1,9 +1,8 @@
 import "../env.js";
+
 import IORedis from "ioredis";
 
-const redisUrl = process.env.REDIS_URL || "redis://127.0.0.1:6379";
-
-const redisClient = new IORedis(redisUrl, {
+const redisClient = new IORedis(process.env.REDIS_URL, {
   maxRetriesPerRequest: null,
 });
 

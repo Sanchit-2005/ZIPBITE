@@ -1,4 +1,4 @@
-﻿import "./env.js";
+import "./env.js";
 import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/userroute.js";
@@ -20,6 +20,7 @@ import Restaurant from "./models/restaurant.js";
 import Message from "./models/message.js";
 import "dotenv/config";
 import redisClient from "./config/redis.js";
+import emailWorker from "./workers/emailWorker.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -202,9 +203,6 @@ async function startServer() {
   try {
     await mongoose.connect(process.env.MONGODB_URL);
     console.log("MongoDB connected successfully!");
-
-    await redisClient.connect();
-    
 
     console.log("Redis PING:", await redisClient.ping());
 

@@ -3,6 +3,51 @@ import Order from "../models/order.js";
 import User from "../models/userModel.js";
 import { StatusCodes } from "http-status-codes";
 import asyncWrapper from "../asyncWrap.js";
+import addEmailJob from "../queue/addEmailJob.js";
+
+const sendOrderStatusEmail = async (order, status) => {
+  try {
+    let customer = order.customer;
+    if (!customer || !customer.email) {
+      customer = await User.findById(order.customer);
+    }
+
+    if (customer?.email) {
+      const statusMessages = {
+        CONFIRMED: "Great news! The restaurant has confirmed your order. 🎉",
+        PREPARING: "Your delicious food is being freshly prepared! 👨‍🍳",
+        READY_FOR_PICKUP: "Your order is ready for pickup! 🍱",
+        OUT_FOR_DELIVERY: "Your order is on its way. Get ready! 🛵",
+        DELIVERED: "Your order has been delivered. Enjoy your meal! ❤️",
+        CANCELLED: "Your order has been cancelled by the restaurant.",
+      };
+
+      const formattedStatus = status.replaceAll("_", " ");
+
+      await addEmailJob({
+        to: customer.email,
+        subject: `ZipBite - Your Order is ${formattedStatus}!`,
+        message: `Hi ${customer.name || "Food Lover"}! 👋
+
+${statusMessages[status] || `Your order status has been updated to ${formattedStatus}.`}
+
+📦 ORDER UPDATE
+Order ID: ${order._id}
+Current Status: ${formattedStatus}
+Total Amount: ₹${order.totalAmount}
+
+Thank you for choosing ZipBite!
+
+Best Regards,
+Team ZipBite ❤️`,
+      });
+
+      console.log(`✅ Order status email (${status}) enqueued for:`, customer.email);
+    }
+  } catch (err) {
+    console.error("❌ Failed to enqueue order status email:", err);
+  }
+};
 
 const getRestaurantOrders = async (req, res) => {
   try {
@@ -76,6 +121,8 @@ const acceptOrder = async (req, res) => {
     order.orderStatus = "CONFIRMED";
     await order.save();
 
+    await sendOrderStatusEmail(order, "CONFIRMED");
+
     return res.status(StatusCodes.OK).json({
       success: true,
       message: "Order accepted successfully",
@@ -122,6 +169,8 @@ const rejectOrder = async (req, res) => {
     order.orderStatus = "CANCELLED";
     order.cancelledAt = new Date();
     await order.save();
+
+    await sendOrderStatusEmail(order, "CANCELLED");
 
     return res.status(StatusCodes.OK).json({
       success: true,
@@ -176,6 +225,8 @@ const updateOrderStatus = async (req, res) => {
 
     order.orderStatus = orderStatus;
     await order.save();
+
+    await sendOrderStatusEmail(order, orderStatus);
 
     return res.status(StatusCodes.OK).json({
       success: true,

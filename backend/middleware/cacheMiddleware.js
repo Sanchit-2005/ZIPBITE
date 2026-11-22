@@ -19,7 +19,7 @@ const cacheMiddleware = asyncWrapper(async (req, res, next) => {
       if (res.statusCode >= 200 && res.statusCode < 300) {
         const CACHE_TTL_SECONDS = 300;
         redisClient
-          .setEx(key, CACHE_TTL_SECONDS, JSON.stringify(data))
+          .set(key, JSON.stringify(data), "EX", CACHE_TTL_SECONDS)
           .catch((err) => {
             console.error("Cache save error:", err);
           });

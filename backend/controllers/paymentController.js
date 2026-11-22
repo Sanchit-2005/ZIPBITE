@@ -3,6 +3,8 @@ import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 import Cart from "../models/cart.js";
 import Order from "../models/order.js";
+import User from "../models/userModel.js";
+import addEmailJob from "../queue/addEmailJob.js";
 import dotenv from "dotenv";
 dotenv.config();
 const razorpay = new Razorpay({
@@ -172,6 +174,35 @@ const VerifyOrder = async (req, res) => {
     await Cart.findOneAndDelete({
       customer: req.user.id,
     });
+
+    try {
+      const customer = await User.findById(req.user.id);
+      if (customer?.email) {
+        await addEmailJob({
+          to: customer.email,
+          subject: "🎉 Payment Confirmed! Your ZipBite Order is Placed!",
+          message: `Hi ${customer.name || "Food Lover"}!
+
+Thank you for choosing ZipBite! ❤️
+
+Your online payment of ₹${order.totalAmount} was verified successfully.
+
+📦 ORDER & PAYMENT DETAILS
+Order ID: ${order._id}
+Payment ID: ${razorpay_payment_id}
+Order Status: ${order.orderStatus}
+Payment Status: PAID
+
+Your restaurant will process your order shortly.
+
+Best Regards,
+Team ZipBite ❤️`,
+        });
+        console.log("✅ Confirmation email job enqueued for:", customer.email);
+      }
+    } catch (mailErr) {
+      console.error("❌ Failed to enqueue payment confirmation email:", mailErr);
+    }
 
     return res.status(200).json({
       success: true,

@@ -2,6 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import asyncWrapper from "../asyncWrap.js";
 import Order from "../models/order.js";
 import Cart from "../models/cart.js";
+import User from "../models/userModel.js";
+import addEmailJob from "../queue/addEmailJob.js";
 const allowedTransitions = {
   PLACED: ["CONFIRMED", "CANCELLED"],
   CONFIRMED: ["PREPARING", "CANCELLED"],
@@ -27,9 +29,17 @@ const addOrder = asyncWrapper(async (req, res) => {
     tax,
   } = req.body;
 
-  const cart = await Cart.findOne({ customer: customerId }).populate(
-    "items.menuItem",
-  );
+  const effectiveCustomerId = req.user?.id || req.user?._id || customerId;
+
+  if (!effectiveCustomerId) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "Customer ID is required" });
+  }
+
+  const cart = await Cart.findOne({ customer: effectiveCustomerId })
+    .populate("items.menuItem")
+    .populate("customer");
 
   if (!cart || cart.items.length === 0) {
     return res
@@ -49,7 +59,7 @@ const addOrder = asyncWrapper(async (req, res) => {
 
   const totalAmount = subtotal + Number(tax || 0) + Number(deliveryFee || 0);
   const order = await Order.create({
-    customer: customerId,
+    customer: effectiveCustomerId,
     restaurant: restaurantId,
     items: cart.items.map((item) => ({
       menuItem: item.menuItem._id,
@@ -70,6 +80,61 @@ const addOrder = asyncWrapper(async (req, res) => {
   // 5. Clear the cart after order creation
   cart.items = [];
   await cart.save();
+  console.log("1. Order created and cart cleared");
+
+  // Retrieve customer details reliably
+  let customer = cart.customer;
+  if (!customer || !customer.email) {
+    customer = await User.findById(effectiveCustomerId);
+  }
+
+  const customerEmail = customer?.email;
+  const customerName = customer?.name || "Food Lover";
+
+  console.log("2. Customer details:", customer);
+  console.log("3. Customer email:", customerEmail);
+
+  if (!customerEmail) {
+    console.warn("⚠️ Customer email not found for ID:", effectiveCustomerId);
+  } else {
+    try {
+      console.log("4. Adding email job to queue...");
+
+      await addEmailJob({
+        to: customerEmail,
+        subject: "🎉 Your ZipBite Order is Confirmed!",
+        message: `Hi ${customerName}!
+
+Thank you for choosing ZipBite! ❤️
+
+Your order has been successfully placed.
+
+🍔 ZIPBITE - ORDER CONFIRMATION
+
+📦 ORDER DETAILS
+Order ID: ${order._id}
+Order Status: ${order.orderStatus}
+Payment Method: ${order.paymentMethod}
+
+💰 PAYMENT SUMMARY
+Subtotal: ₹${order.subtotal}
+Delivery Fee: ₹${order.deliveryFee}
+Tax: ₹${order.tax}
+Total Amount: ₹${order.totalAmount}
+
+Your restaurant will process your order shortly.
+
+Thank you for being a part of ZipBite!
+
+Best Regards,
+Team ZipBite ❤️`,
+      });
+
+      console.log("5. Email job added successfully to queue!");
+    } catch (emailError) {
+      console.error("❌ Failed to enqueue email job:", emailError);
+    }
+  }
 
   // 6. Send response
   return res.status(StatusCodes.CREATED).json({
@@ -151,7 +216,7 @@ const updateOrderStatus = asyncWrapper(async (req, res) => {
   }
 
   // Find the order
-  const order = await Order.findById(orderId);
+  const order = await Order.findById(orderId).populate("customer");
 
   if (!order) {
     return res.status(StatusCodes.NOT_FOUND).json({
@@ -178,12 +243,55 @@ const updateOrderStatus = asyncWrapper(async (req, res) => {
   }
 
   await order.save();
+  const statusMessages = {
+    CONFIRMED: "Great news! The restaurant has confirmed your order. 🎉",
+    PREPARING: "Your delicious food is being freshly prepared! 👨‍🍳",
+    READY_FOR_PICKUP: "Your order is ready for pickup! 🍱",
+    OUT_FOR_DELIVERY: "Your order is on its way. Get ready! 🛵",
+    DELIVERED: "Your order has been delivered. Enjoy your meal! ❤️",
+    CANCELLED: "Your order has been cancelled. We hope to serve you again.",
+  };
+
+  try {
+    let customer = order.customer;
+    if (!customer || !customer.email) {
+      customer = await User.findById(order.customer);
+    }
+
+    if (customer?.email) {
+      const formattedStatus = orderStatus.replaceAll("_", " ");
+      await addEmailJob({
+        to: customer.email,
+        subject: `ZipBite - Your Order is ${formattedStatus}!`,
+        message: `Hi ${customer.name || "Food Lover"}! 👋
+
+${statusMessages[orderStatus] || `Your order status has been updated to ${formattedStatus}.`}
+
+📦 ORDER UPDATE
+
+Order ID: ${order._id}
+Current Status: ${formattedStatus}
+Total Amount: ₹${order.totalAmount}
+
+Thank you for choosing ZipBite!
+
+Best Regards,
+Team ZipBite ❤️`,
+      });
+      console.log(`✅ Order status email (${orderStatus}) enqueued for:`, customer.email);
+    }
+  } catch (emailErr) {
+    console.error("❌ Failed to enqueue order status update email:", emailErr);
+  }
 
   return res.status(StatusCodes.OK).json({
     message: "Order status updated successfully",
     order,
   });
 });
+
+const sendEmail = async (req, res) => {};
+
 export {
   addOrder,
   showMyOrders,

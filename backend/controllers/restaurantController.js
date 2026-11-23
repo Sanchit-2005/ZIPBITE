@@ -3,10 +3,20 @@ import { StatusCodes } from "http-status-codes";
 import geocodeAddress from "../utils/geocodeAddress.js";
 import MenuItem from "../models/menuItem.js";
 import clearCache from "../utils/clearCache.js";
+import User from "../models/userModel.js";
+import bcrypt from "bcrypt";
 
 const registerRestaurant = async (req, res) => {
   try {
-    const { name, email, owner, phone, address } = req.body;
+    const { name, ownerName, email, password, phone, address } = req.body;
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(StatusCodes.CONFLICT).json({
+        message: "An account already exists with this email!",
+      });
+    }
 
     const checkRestaurant = await Restaurant.findOne({
       name,
@@ -19,7 +29,6 @@ const registerRestaurant = async (req, res) => {
       });
     }
 
-    // Convert address into a searchable string
     const fullAddress = [
       address.street,
       address.city,
@@ -30,28 +39,52 @@ const registerRestaurant = async (req, res) => {
       .filter(Boolean)
       .join(", ");
 
-    // Get coordinates using geocoding
     const currLocation = await geocodeAddress(fullAddress);
 
-    const hotel = new Restaurant({
-      name,
-      owner,
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    //  Create restaurant owner account
+    const ownerUser = new User({
+      name: ownerName,
       email,
+      password: hashedPassword,
       phone,
-      address,
-      location: currLocation,
-      image: req.file ? req.file.path : "",
+      role: "restaurant",
     });
 
-    await hotel.save();
-    await clearCache([
-      "cache:/restaurants*",
-      "cache:/nearby*",
-      "cache:/search*",
-    ]);
+    await ownerUser.save();
+
+    let hotel;
+
+    try {
+      hotel = new Restaurant({
+        name,
+        owner: ownerUser._id,
+        email,
+        phone,
+        address,
+        location: currLocation,
+        image: req.file ? req.file.path : "",
+      });
+
+      await hotel.save();
+    } catch (error) {
+      await User.findByIdAndDelete(ownerUser._id);
+      throw error;
+    }
+
+    try {
+      await clearCache([
+        "cache:/restaurants*",
+        "cache:/nearby*",
+        "cache:/search*",
+      ]);
+    } catch (cacheError) {
+      console.error("Restaurant cache clearing failed:", cacheError.message);
+    }
 
     return res.status(StatusCodes.CREATED).json({
-      message: "Restaurant added successfully!",
+      message: "Restaurant registered successfully! Please log in.",
       restaurant: hotel,
     });
   } catch (err) {
@@ -85,17 +118,25 @@ const getRestaurant = async (req, res) => {
 const editRestaurant = async (req, res) => {
   try {
     const { restaurantId } = req.params;
-    const restaurant = await Restaurant.findById(restaurantId);
+
+    // Find restaurant belonging to the logged-in owner
+    const restaurant = await Restaurant.findOne({
+      _id: restaurantId,
+      owner: req.user._id,
+    });
+
     if (!restaurant) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ message: "Restaurant not found" });
+      return res.status(StatusCodes.NOT_FOUND).json({
+        message: "Restaurant not found or you are not the owner",
+      });
     }
+
     const { name, email, phone, address, location } = req.body;
 
     restaurant.name = name || restaurant.name;
     restaurant.email = email || restaurant.email;
     restaurant.phone = phone || restaurant.phone;
+
     if (address) {
       restaurant.address =
         typeof address === "string" ? JSON.parse(address) : address;
@@ -105,36 +146,61 @@ const editRestaurant = async (req, res) => {
       restaurant.location =
         typeof location === "string" ? JSON.parse(location) : location;
     }
+
     await restaurant.save();
+
     await clearCache([
       "cache:/restaurants*",
       "cache:/nearby*",
       "cache:/search*",
     ]);
-    res.status(StatusCodes.ACCEPTED).json({ message: "Updated the details" });
+
+    return res.status(StatusCodes.OK).json({
+      message: "Restaurant details updated successfully",
+      restaurant,
+    });
   } catch (err) {
-    console.log(err);
+    console.error("Edit restaurant error:", err.message);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to update restaurant",
+    });
   }
 };
 
 const deleteRestaurant = async (req, res) => {
   try {
     const { restaurantId } = req.params;
-    const restaurant = await Restaurant.findById(restaurantId);
+
+    // Find restaurant belonging to the logged-in owner
+    const restaurant = await Restaurant.findOne({
+      _id: restaurantId,
+      owner: req.user._id,
+    });
+
     if (!restaurant) {
       return res.status(StatusCodes.NOT_FOUND).json({
-        message: "Restaurant not found",
+        message: "Restaurant not found or you are not the owner",
       });
     }
+
     await restaurant.deleteOne();
+
     await clearCache([
       "cache:/restaurants*",
       "cache:/nearby*",
       "cache:/search*",
     ]);
-    res.status(StatusCodes.ACCEPTED).json({ message: "Restaurant Deleted" });
+
+    return res.status(StatusCodes.OK).json({
+      message: "Restaurant deleted successfully",
+    });
   } catch (err) {
-    console.log(err);
+    console.error("Delete restaurant error:", err.message);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to delete restaurant",
+    });
   }
 };
 

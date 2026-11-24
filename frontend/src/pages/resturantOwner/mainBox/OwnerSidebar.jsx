@@ -50,7 +50,9 @@ export default function OwnerSidebar() {
         {items.map((item) => {
           const isActive =
             item.path === "/restaurant-owner"
-              ? location.pathname === item.path
+              ? location.pathname === "/restaurant-owner" ||
+                location.pathname === "/restaurant-owner/" ||
+                location.pathname === "/restaurant/dashboard"
               : location.pathname.startsWith(item.path);
 
           return (

@@ -21,7 +21,7 @@ import Message from "./models/message.js";
 import "dotenv/config";
 import redisClient from "./config/redis.js";
 import emailWorker from "./workers/emailWorker.js";
-
+import deliveryPartnerRoute from "./routes/deliveryPartnerRoute.js";
 const app = express();
 const server = http.createServer(app);
 
@@ -198,7 +198,7 @@ app.use("/apiV3", payemntRoute);
 app.use("/apiV4", ownerRoute);
 app.use("/upload", uploadRoute);
 app.use("/chat", chatRoute);
-
+app.use("/delveryPartner", deliveryPartnerRoute);
 async function startServer() {
   try {
     await mongoose.connect(process.env.MONGODB_URL);

@@ -28,7 +28,7 @@ import EditProfile from "./pages/resturantOwner/components/EditProfile";
 import CustomerChat from "./pages/customer/CustomerChat";
 import RestaurantOwnerChats from "./pages/resturantOwner/RestaurantOwnerChats";
 import RestaurantOwnerChat from "./pages/resturantOwner/RestaurantOwnerChat";
-
+import RestaurantRegister from "./pages/resturantOwner/RestaurantRegister";
 function App() {
   return (
     <Routes>
@@ -59,6 +59,22 @@ function App() {
         element={
           <RestaurantOwnerProvider>
             <RestaurantOrderDetail />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant/dashboard"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOwner />
+          </RestaurantOwnerProvider>
+        }
+      />
+      <Route
+        path="/restaurant-owner"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantOwner />
           </RestaurantOwnerProvider>
         }
       />
@@ -125,6 +141,15 @@ function App() {
         element={
           <RestaurantOwnerProvider>
             <RestaurantOwnerChat />
+          </RestaurantOwnerProvider>
+        }
+      />
+
+      <Route
+        path="/restaurant/register"
+        element={
+          <RestaurantOwnerProvider>
+            <RestaurantRegister />
           </RestaurantOwnerProvider>
         }
       />

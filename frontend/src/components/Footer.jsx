@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import { href, useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const quickLinks = [
@@ -21,6 +22,7 @@ const Footer = () => {
   const aboutLinks = [
     { name: "About Us", href: "/about" },
     { name: "Careers", href: "/careers" },
+    { name: "Register Restaurnat", href: "/restaurant/register" },
     { name: "Become a Partner", href: "/partner" },
   ];
 
@@ -52,7 +54,7 @@ const Footer = () => {
   );
 
   return (
-   <footer className="zipbite-footer bg-gradient-to-br from-red-950 via-neutral-950 to-black p-2 sm:p-4">
+    <footer className="zipbite-footer bg-gradient-to-br from-red-950 via-neutral-950 to-black p-2 sm:p-4">
       <div className="mx-auto flex min-h-[680px] max-w-[1600px] flex-col rounded-[28px] bg-white px-6 py-8 sm:px-10 sm:py-10">
         {/* Top section */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">

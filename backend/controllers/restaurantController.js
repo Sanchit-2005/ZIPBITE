@@ -10,6 +10,27 @@ const registerRestaurant = async (req, res) => {
   try {
     const { name, ownerName, email, password, phone, address } = req.body;
 
+    let parsedAddress = address;
+    if (typeof address === "string") {
+      try {
+        parsedAddress = JSON.parse(address);
+      } catch (e) {
+        parsedAddress = {};
+      }
+    }
+
+    if (
+      !parsedAddress ||
+      !parsedAddress.street ||
+      !parsedAddress.city ||
+      !parsedAddress.state ||
+      !parsedAddress.postalCode
+    ) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: "All address fields (street, city, state, postal code) are required",
+      });
+    }
+
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -29,17 +50,7 @@ const registerRestaurant = async (req, res) => {
       });
     }
 
-    const fullAddress = [
-      address.street,
-      address.city,
-      address.state,
-      address.postalCode,
-      address.country || "India",
-    ]
-      .filter(Boolean)
-      .join(", ");
-
-    const currLocation = await geocodeAddress(fullAddress);
+    const currLocation = await geocodeAddress(parsedAddress);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -62,7 +73,7 @@ const registerRestaurant = async (req, res) => {
         owner: ownerUser._id,
         email,
         phone,
-        address,
+        address: parsedAddress,
         location: currLocation,
         image: req.file ? req.file.path : "",
       });

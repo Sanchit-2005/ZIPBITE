@@ -44,7 +44,14 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("userData", JSON.stringify(request.data.user));
 
       setIsAuthenticated(true);
-      router("/home");
+
+      if (request.data.user?.role === "restaurant") {
+        router("/restaurant/dashboard");
+      } else if (request.data.user?.role === "customer") {
+        router("/home");
+      } else {
+        router("/home");
+      }
     }
 
     return request.data.message;
